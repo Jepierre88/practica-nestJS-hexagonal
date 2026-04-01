@@ -13,6 +13,7 @@ export class ProgramLanguajesController {
   async create(
     @Body() createProgramLanguajeDto: CreateProgramLanguajeDto
   ) {
-    return this.createProgramLanguajeUseCase.execute(createProgramLanguajeDto)
+    const programLanguaje = await this.createProgramLanguajeUseCase.execute(createProgramLanguajeDto);
+    return programLanguaje.toPrimitives();
   }
 }
