@@ -19,12 +19,12 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { UserDtoMapper } from './mappers/user-dto.mapper';
-import { UserDomainExceptionFilter } from './filters/user-domain-exception.filter';
 import { Public } from '@auth/infrastructure/adapters/in/rest/decorators/public.decorator';
 import { CreateUserCommand } from '@users/application/commands/create-user.command';
+import { DomainExceptionFilter } from './filters/user-domain-exception.filter';
 
 @Controller('users')
-@UseFilters(UserDomainExceptionFilter)
+@UseFilters(DomainExceptionFilter)
 export class UsersController {
   constructor(
     private readonly registerUser: RegisterUserUseCase,

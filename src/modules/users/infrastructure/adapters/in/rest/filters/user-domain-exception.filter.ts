@@ -5,13 +5,14 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { UserDomainException, UserNotFoundException, UserAlreadyExistsException } from '@users/domain/exceptions/user-domain.exception';
+import { UserNotFoundException, UserAlreadyExistsException } from '@users/domain/exceptions/user-domain.exception';
 import { AuthDomainException, InvalidCredentialsException, CredentialNotFoundException } from '@auth/domain/exceptions/auth-domain.exception';
+import { DomainException } from '@task/domain/exceptions/domain.exception';
 
-type DomainError = UserDomainException | AuthDomainException;
+type DomainError = DomainException | AuthDomainException;
 
-@Catch(UserDomainException, AuthDomainException)
-export class UserDomainExceptionFilter implements ExceptionFilter<DomainError> {
+@Catch(DomainException, AuthDomainException)
+export class DomainExceptionFilter implements ExceptionFilter<DomainError> {
   catch(exception: DomainError, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
