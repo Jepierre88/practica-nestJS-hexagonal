@@ -2,6 +2,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 
 // Application — Ports
@@ -33,9 +34,12 @@ import UsersModule from '@users/infrastructure/users.module';
   imports: [
     TypeOrmModule.forFeature([CredentialOrmEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: process.env['JWT_SECRET'] ?? 'super-secret-key-change-in-production',
-      signOptions: { expiresIn: '1h' },
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET', 'super-secret-key-change-in-production'),
+        signOptions: { expiresIn: config.get('JWT_EXPIRES_IN', '1h') as any },
+      }),
     }),
     forwardRef(() => UsersModule),
   ],

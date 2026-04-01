@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskModule } from '@task/infrastructure/task.module';
 import { TaskOrmEntity } from '@task/infrastructure/adapters/out/persistence/typeorm/entities/task-orm.entity';
@@ -8,21 +10,29 @@ import { UserOrmEntity } from '@users/infrastructure/adapters/out/persistence/ty
 import { CredentialOrmEntity } from '@auth/infrastructure/adapters/out/persistence/typeorm/entities/credential-orm.entity';
 import { ProgramLanguajesModule } from './modules/program-languajes/infrastructure/program-languajes.module';
 import { ProgramLanguajeEntity } from '@program-languajes/infrastructure/adapters/out/persistence/typeorm/entities/program-languaje.entity';
+import { GeneralResponseInterceptor } from '@shared/infrastructure/interceptors/general-response.interceptor';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env['DB_HOST'] ?? 'localhost',
-      port: parseInt(process.env['DB_PORT'] ?? '5432', 10),
-      username: process.env['DB_USERNAME'] ?? 'postgres',
-      password: process.env['DB_PASSWORD'] ?? 'postgres',
-      database: process.env['DB_NAME'] ?? 'practice_nest',
-      entities: [TaskOrmEntity, UserOrmEntity, CredentialOrmEntity, ProgramLanguajeEntity],
-      synchronize: false,
-      migrationsRun: true,
-      migrations: ['dist/database/migrations/*'],
-      migrationsTableName: 'migrations',
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get<string>('DB_HOST', 'localhost'),
+        port: config.get<number>('DB_PORT', 5432),
+        username: config.get<string>('DB_USERNAME', 'postgres'),
+        password: config.get<string>('DB_PASSWORD') ?? 'postgres',
+        database: config.get<string>('DB_NAME', 'practice_nest'),
+        entities: [TaskOrmEntity, UserOrmEntity, CredentialOrmEntity, ProgramLanguajeEntity],
+        synchronize: false,
+        migrationsRun: true,
+        migrations: ['dist/database/migrations/*'],
+        migrationsTableName: 'migrations',
+      }),
     }),
     TaskModule,
     AuthModule,
@@ -30,6 +40,11 @@ import { ProgramLanguajeEntity } from '@program-languajes/infrastructure/adapter
     ProgramLanguajesModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: GeneralResponseInterceptor,
+    },
+  ],
 })
 export class AppModule {}

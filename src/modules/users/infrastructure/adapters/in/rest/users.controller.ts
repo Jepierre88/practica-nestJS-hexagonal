@@ -6,7 +6,6 @@ import {
   Delete,
   Param,
   Body,
-  UseFilters,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
@@ -21,10 +20,9 @@ import { UserResponseDto } from './dtos/user-response.dto';
 import { UserDtoMapper } from './mappers/user-dto.mapper';
 import { Public } from '@auth/infrastructure/adapters/in/rest/decorators/public.decorator';
 import { CreateUserCommand } from '@users/application/commands/create-user.command';
-import { DomainExceptionFilter } from './filters/user-domain-exception.filter';
+import { ResponseMessage } from '@shared/infrastructure/decorators/response-message.decorator';
 
 @Controller('users')
-@UseFilters(DomainExceptionFilter)
 export class UsersController {
   constructor(
     private readonly registerUser: RegisterUserUseCase,
@@ -36,24 +34,28 @@ export class UsersController {
   @Public()
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @ResponseMessage('User registered successfully')
   async register(@Body() dto: RegisterUserDto): Promise<UserResponseDto> {
     const user = await this.registerUser.execute(CreateUserCommand.create(dto));
     return UserDtoMapper.toResponse(user);
   }
 
   @Get()
+  @ResponseMessage('Users retrieved successfully')
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.findUsers.findAll();
     return users.map(UserDtoMapper.toResponse);
   }
 
   @Get(':id')
+  @ResponseMessage('User retrieved successfully')
   async findById(@Param() params: UuidParam): Promise<UserResponseDto> {
     const user = await this.findUsers.findById(params.id);
     return UserDtoMapper.toResponse(user);
   }
 
   @Put(':id')
+  @ResponseMessage('User updated successfully')
   async update(
     @Param() params: UuidParam,
     @Body() dto: UpdateUserDto,
@@ -68,6 +70,7 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ResponseMessage('User deleted successfully')
   async remove(@Param() params: UuidParam): Promise<void> {
     await this.deleteUser.execute(params.id);
   }

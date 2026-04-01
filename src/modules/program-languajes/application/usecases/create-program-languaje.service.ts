@@ -15,7 +15,7 @@ export class CreateProgramLanguajeService implements CreateProgramLanguajeUseCas
     const alreadyExists = await this.programLanguajeRepository.findByName(command.name)
 
     if (alreadyExists) {
-      throw new ProgramLanguajeAlreadyExistsException("Program languaje already exists")
+      throw new ProgramLanguajeAlreadyExistsException(command.name)
     }
     const programLanguaje = ProgramLanguaje.create(command)
 
