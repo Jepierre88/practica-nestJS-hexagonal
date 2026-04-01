@@ -28,6 +28,12 @@ function toCamel(str) {
   return pascal.charAt(0).toLowerCase() + pascal.slice(1);
 }
 
+function pluralize(str) {
+  if (str.endsWith('s')) return str;
+  if (str.endsWith('y') && !/[aeiou]y$/i.test(str)) return str.slice(0, -1) + 'ies';
+  return str + 's';
+}
+
 function writeFile(filePath, content) {
   const dir = path.dirname(filePath);
   fs.mkdirSync(dir, { recursive: true });
@@ -298,7 +304,7 @@ export class Delete${pascal}Service implements Delete${pascal}UseCase {
 
 // ─── Infrastructure ─────────────────────────────────────────
 
-function ormEntity(pascal, kebab, schema) {
+function ormEntity(pascal, kebab, pluralKebab, schema) {
   return `import { DbSchemas } from '@shared/schemas';
 import {
   Column,
@@ -308,7 +314,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('${kebab}s', { schema: DbSchemas.${schema} })
+@Entity('${pluralKebab}', { schema: DbSchemas.${schema} })
 export class ${pascal}OrmEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -535,7 +541,7 @@ export class ${pascal}DomainExceptionFilter implements ExceptionFilter {
 
 // ─── Controller ─────────────────────────────────────────────
 
-function controller(pascal, kebab, camel, crud) {
+function controller(pascal, kebab, camel, pluralKebab, crud) {
   const imports = [
     `import { Controller, Post, Body, HttpCode, HttpStatus, UseFilters } from '@nestjs/common';`,
   ];
@@ -606,7 +612,7 @@ import { UuidParam } from './dtos/uuid-param.dto';
 import { ${pascal}DtoMapper } from './mappers/${kebab}-dto.mapper';
 import { ${pascal}DomainExceptionFilter } from './filters/${kebab}-domain-exception.filter';
 
-@Controller('${kebab}s')
+@Controller('${pluralKebab}')
 @UseFilters(${pascal}DomainExceptionFilter)
 export class ${pascal}Controller {
   constructor(
@@ -674,6 +680,11 @@ async function main() {
   const pascal = toPascal(kebab);
   const camel = toCamel(kebab);
 
+  const defaultPlural = pluralize(kebab);
+  const pluralAnswer = await ask(`📚 Plural name for routes/tables [${defaultPlural}]: `);
+  const pluralKebab = pluralAnswer.trim() ? toKebab(pluralAnswer.trim()) : defaultPlural;
+  const pluralPascal = toPascal(pluralKebab);
+
   const schemaName = await ask(`🗄️  DB schema name in DbSchemas enum (e.g. Task, Auth, Tech): `);
 
   const crudAnswer = await ask('📝 Generate full CRUD? (y/n) [y]: ');
@@ -684,6 +695,7 @@ async function main() {
   const base = path.join(process.cwd(), 'src', 'modules', kebab);
 
   console.log(`\n📁 Generating module "${pascal}" at src/modules/${kebab}/\n`);
+  console.log(`   Plural: ${pluralKebab}`);
   console.log(`   CRUD: ${crud ? 'Yes (create, find, update, delete)' : 'No (create only)'}`);
   console.log(`   Schema: ${schemaName}\n`);
 
@@ -717,7 +729,7 @@ async function main() {
   }
 
   // Infrastructure — Persistence
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'out', 'persistence', 'typeorm', 'entities', `${kebab}-orm.entity.ts`), ormEntity(pascal, kebab, schemaName));
+  writeFile(path.join(base, 'infrastructure', 'adapters', 'out', 'persistence', 'typeorm', 'entities', `${kebab}-orm.entity.ts`), ormEntity(pascal, kebab, pluralKebab, schemaName));
   writeFile(path.join(base, 'infrastructure', 'adapters', 'out', 'persistence', 'typeorm', 'mappers', `${kebab}-persistence.mapper.ts`), persistenceMapper(pascal, kebab));
   writeFile(path.join(base, 'infrastructure', 'adapters', 'out', 'persistence', 'typeorm', 'repositories', `typeorm-${kebab}.repository.ts`), typeormRepository(pascal, kebab, camel, crud));
 
@@ -730,7 +742,7 @@ async function main() {
   }
   writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'mappers', `${kebab}-dto.mapper.ts`), dtoMapper(pascal, kebab));
   writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'filters', `${kebab}-domain-exception.filter.ts`), exceptionFilter(pascal, kebab));
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', `${kebab}.controller.ts`), controller(pascal, kebab, camel, crud));
+  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', `${kebab}.controller.ts`), controller(pascal, kebab, camel, pluralKebab, crud));
 
   // Infrastructure — Module
   writeFile(path.join(base, 'infrastructure', `${kebab}.module.ts`), nestModule(pascal, kebab, crud));
