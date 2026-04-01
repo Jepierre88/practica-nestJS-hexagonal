@@ -8,6 +8,8 @@ import { CreateProgramLanguajeService } from "@program-languajes/application/use
 import { ProgramLanguajeRepositoryPort } from "@program-languajes/application/ports/out/program-languaje-repository.port";
 import { ListProgramLanguajesService } from "@program-languajes/application/usecases/list-program-languajes.service";
 import { ListProgramLanguajesUseCase } from "@program-languajes/application/ports/in/list-program-languajes.port";
+import { EditProgramLanguajeUseCase } from "@program-languajes/application/ports/in/edit-program-languaje.port";
+import { EditProgramLanguajeService } from "@program-languajes/application/usecases/edit-program-languaje.service";
 
 @Module({
     imports: [TypeOrmModule.forFeature([ProgramLanguajeEntity])],
@@ -26,8 +28,8 @@ import { ListProgramLanguajesUseCase } from "@program-languajes/application/port
             useClass: ListProgramLanguajesService
         },
         {
-            provide: ProgramLanguajeRepositoryPort,
-            useClass: TypeOrmProgramLanguajeRepository
+            provide: EditProgramLanguajeUseCase,
+            useClass: EditProgramLanguajeService
         }
     ]
 })

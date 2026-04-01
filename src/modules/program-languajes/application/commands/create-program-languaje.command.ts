@@ -7,13 +7,28 @@ interface CreateProgramLanguajeCommandProps {
 }
 
 export class CreateProgramLanguajeCommand {
+
+  private props: CreateProgramLanguajeCommandProps;
+
   private constructor(
-    public readonly name: string,
-    public readonly description: string,
-    public readonly difficulty?: DifficultyLevel,
-  ) {}
+    props: CreateProgramLanguajeCommandProps
+  ) {
+    this.props = props;
+  }
 
   static create(props: CreateProgramLanguajeCommandProps): CreateProgramLanguajeCommand {
-    return new CreateProgramLanguajeCommand(props.name, props.description, props.difficulty);
+    return new CreateProgramLanguajeCommand(props);
+  }
+
+  get name(): string {
+    return this.props.name;
+  }
+
+  get description(): string {
+    return this.props.description;
+  }
+
+  get difficulty(): DifficultyLevel | undefined {
+    return this.props.difficulty;
   }
 }

@@ -21,13 +21,17 @@ export class TypeOrmProgramLanguajeRepository implements  ProgramLanguajeReposit
     return ProgramLanguajePersistenceMapper.toDomain(savedEntity);
   }
   async findById(id: string): Promise<ProgramLanguaje | null> {
-    throw new Error("Method not implemented.");
+    const ormEntity = await this.repository.findOne({ where: { id } });
+    return ormEntity ? ProgramLanguajePersistenceMapper.toDomain(ormEntity) : null;
   }
   async findAll(): Promise<ProgramLanguaje[]> {
-    throw new Error("Method not implemented.");
+    const ormEntities = await this.repository.find();
+    return ormEntities.map(ProgramLanguajePersistenceMapper.toDomain);
   }
   async update(id: string, entity: ProgramLanguaje): Promise<ProgramLanguaje> {
-    throw new Error("Method not implemented.");
+    const ormEntity = ProgramLanguajePersistenceMapper.toOrm(entity);
+    const updatedEntity = await this.repository.save({ ...ormEntity, id });
+    return ProgramLanguajePersistenceMapper.toDomain(updatedEntity);
   }
   async delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
