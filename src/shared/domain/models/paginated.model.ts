@@ -1,5 +1,7 @@
-interface PaginatedModelProps<T> {
-  readonly items: T[];
+import { DomainModel } from "./domain.model";
+
+interface PaginatedModelProps {
+  readonly items: DomainModel[];
   readonly totalItems: number;
   readonly currentPage: number;
   readonly totalPages: number;
@@ -7,17 +9,17 @@ interface PaginatedModelProps<T> {
   readonly hasPreviousPage: boolean;
 }
 
-export class PaginatedModel<T> {
-  private props: PaginatedModelProps<T>;
-  private constructor(props: PaginatedModelProps<T>){
-    this.props = props
+export class PaginatedModel {
+  private props: PaginatedModelProps;
+  private constructor(props: PaginatedModelProps) {
+    this.props = props;
   }
 
-  static create<T>(props: PaginatedModelProps<T>): PaginatedModel<T> {
-    return new PaginatedModel<T>(props);
+  static create(props: PaginatedModelProps): PaginatedModel {
+    return new PaginatedModel(props);
   }
 
-  get items(): T[] {
+  get items(): DomainModel[] {
     return this.props.items;
   }
 
@@ -43,12 +45,12 @@ export class PaginatedModel<T> {
 
   toPrimitives() {
     return {
-      items: this.props.items,
+      items: this.props.items.map((item) => item.toPrimitives()),
       totalItems: this.props.totalItems,
       currentPage: this.props.currentPage,
       totalPages: this.props.totalPages,
       hasNextPage: this.props.hasNextPage,
       hasPreviousPage: this.props.hasPreviousPage,
-    }
+    };
   }
 }

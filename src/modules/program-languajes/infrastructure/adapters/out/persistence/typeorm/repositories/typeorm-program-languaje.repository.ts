@@ -45,7 +45,7 @@ export class TypeOrmProgramLanguajeRepository implements  ProgramLanguajeReposit
     return ormEntities.map(ProgramLanguajePersistenceMapper.toDomain)
   }
 
-  async listPaginated(params: ListPaginatedCommand): Promise<PaginatedModel<ProgramLanguaje>> {
+  async listPaginated(params: ListPaginatedCommand): Promise<PaginatedModel> {
     const [entities, total] = await this.repository.findAndCount({
       skip: (params.page - 1) * params.limit,
       take: params.limit,

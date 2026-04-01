@@ -1,4 +1,5 @@
 import { DifficultyLevel } from "@program-languajes/domain/value-objects/difficulty-level.vo";
+import { DomainModel } from "@shared/domain/models/domain.model";
 
 interface ProgramLanguajeProps {
   readonly id?: string;
@@ -18,10 +19,11 @@ interface CreateProgramLanguajeProps {
 interface ReconstructProgramLanguajeProps extends ProgramLanguajeProps {
 }
 
-export class ProgramLanguaje {
+export class ProgramLanguaje extends DomainModel {
   private readonly props: ProgramLanguajeProps;
 
   private constructor(props: ProgramLanguajeProps) {
+    super();
     this.props = props;
   }
 

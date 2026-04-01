@@ -1,6 +1,7 @@
 import { UserId } from '@users/domain/value-objects/user-id.vo';
 import { UserName } from '@users/domain/value-objects/user-name.vo';
 import { UserEmail } from '@users/domain/value-objects/user-email.vo';
+import { DomainModel } from '@shared/domain/models/domain.model';
 
 export interface UserProps {
   readonly id?: UserId;
@@ -26,10 +27,11 @@ export interface ReconstructUserProps {
   readonly updatedAt: Date;
 }
 
-export class User {
+export class User extends DomainModel {
   private readonly props: UserProps;
 
   private constructor(props: UserProps) {
+    super();
     this.props = props;
   }
 

@@ -1,7 +1,6 @@
 import { ListPaginatedCommand } from "@shared/application/commands/list-paginated.command";
 import { ListProgramLanguajesUseCase } from "../ports/in/list-program-languajes.port";
 import { PaginatedModel } from "@shared/domain/models/paginated.model";
-import { ProgramLanguaje } from "@program-languajes/domain/models/program-languaje.model";
 import { Inject, Injectable } from "@nestjs/common";
 import { ProgramLanguajeRepositoryPort } from "../ports/out/program-languaje-repository.port";
 
@@ -12,7 +11,7 @@ export class ListProgramLanguajesService implements ListProgramLanguajesUseCase 
     @Inject(ProgramLanguajeRepositoryPort) private readonly programLanguajeRepository: ProgramLanguajeRepositoryPort,
   ) {}
 
-  async execute(input: ListPaginatedCommand): Promise<PaginatedModel<ProgramLanguaje>> {
+  async execute(input: ListPaginatedCommand): Promise<PaginatedModel> {
     return this.programLanguajeRepository.listPaginated(input);
   }
 }

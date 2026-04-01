@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Param, Post, Query } from "@nestjs/common";
 import { CreateProgramLanguajeUseCase } from "@program-languajes/application/ports/in/create-program-languaje.port";
 import { CreateProgramLanguajeDto } from "./dtos/create-program-languaje.dto";
 import { ResponseMessage } from '@shared/infrastructure/decorators/response-message.decorator';
@@ -20,9 +20,9 @@ export class ProgramLanguajesController {
     return programLanguaje.toPrimitives();
   }
 
-  @Post("list")
+  @Get("list")
   @ResponseMessage('Program languages listed successfully')
-  async list(@Param() params: ListPaginatedCommand) {
+  async list(@Query() params: ListPaginatedCommand) {
     const programLanguajes = await this.listProgramLanguajesUseCase.execute(params);
     return programLanguajes.toPrimitives();
   }
