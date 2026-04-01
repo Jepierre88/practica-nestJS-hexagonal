@@ -1,4 +1,4 @@
-import { CrudRepositoryInterface } from "@shared/interfaces/crud-repository.interface";
+import { CrudRepositoryInterface } from "@shared/domain/interfaces/crud-repository.interface";
 import { ProgramLanguaje } from "src/modules/program-languajes/domain/models/program-languaje.model";
 
 export abstract class ProgramLanguajeRepositoryPort implements CrudRepositoryInterface<ProgramLanguaje>{

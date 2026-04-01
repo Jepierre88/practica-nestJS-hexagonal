@@ -1,4 +1,4 @@
-import { UseCase } from "@shared/interfaces/use-case.interface";
+import { UseCase } from "@shared/domain/interfaces/use-case.interface";
 import { CreateProgramLanguajeCommand } from "../../commands/create-program-languaje.command";
 import { ProgramLanguaje } from "@program-languajes/domain/models/program-languaje.model";
 

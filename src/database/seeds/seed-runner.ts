@@ -1,11 +1,12 @@
 import dataSource from '@database/typeorm.config';
 import { Seeder } from './seeder.interface';
 import { TaskSeeder } from './task.seed';
+import { ProgramLanguajeSeeder } from './program-languaje.seed';
 
 /**
  * Registra aquí todos los seeders en el orden que deben ejecutarse.
  */
-const seeders: Seeder[] = [new TaskSeeder()];
+const seeders: Seeder[] = [new TaskSeeder(), new ProgramLanguajeSeeder()];
 
 async function runSeeds(): Promise<void> {
   console.log('🌱 Iniciando seeds...\n');

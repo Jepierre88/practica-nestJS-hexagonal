@@ -1,4 +1,4 @@
-import { DomainError } from "@shared/exceptions/domain-error.exception";
+import { DomainError } from "@shared/domain/exceptions/domain-error.exception";
 
 
 

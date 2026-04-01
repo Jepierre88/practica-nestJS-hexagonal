@@ -6,7 +6,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { DomainError } from '@shared/exceptions/domain-error.exception';
+import { DomainError } from '@shared/domain/exceptions/domain-error.exception';
 import { DomainException } from '@task/domain/exceptions/domain.exception';
 import { AuthDomainException } from '@auth/domain/exceptions/auth-domain.exception';
 
