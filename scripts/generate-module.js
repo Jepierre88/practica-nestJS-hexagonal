@@ -44,7 +44,9 @@ function writeFile(filePath, content) {
 // ─── Templates ──────────────────────────────────────────────
 
 function domainModel(pascal, kebab) {
-  return `export interface ${pascal}Props {
+  return `import { DomainModel } from '@shared/domain/models/domain.model';
+
+export interface ${pascal}Props {
   readonly id?: string;
   readonly name: string;
   readonly createdAt?: Date;
@@ -57,10 +59,11 @@ export interface Create${pascal}Props {
 
 export interface Reconstruct${pascal}Props extends ${pascal}Props {}
 
-export class ${pascal} {
+export class ${pascal} extends DomainModel {
   private readonly props: ${pascal}Props;
 
   private constructor(props: ${pascal}Props) {
+    super();
     this.props = props;
   }
 

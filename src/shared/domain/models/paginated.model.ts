@@ -45,7 +45,7 @@ export class PaginatedModel {
 
   toPrimitives() {
     return {
-      items: this.props.items.map((item) => item.toPrimitives()),
+      items: this.props.items.map(item => item.toPrimitives()),
       totalItems: this.props.totalItems,
       currentPage: this.props.currentPage,
       totalPages: this.props.totalPages,
