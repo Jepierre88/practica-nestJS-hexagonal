@@ -172,7 +172,7 @@ export class Update${pascal}Command {
 // ─── Ports (in) ─────────────────────────────────────────────
 
 function createPort(pascal, kebab) {
-  return `import { UseCasePort } from '@shared/domain/ports/use-case.port';
+  return `import { UseCasePort } from '@shared/application/ports/in/use-case.port';
 import { Create${pascal}Command } from '@${kebab}/application/commands/create-${kebab}.command';
 import { ${pascal} } from '@${kebab}/domain/models/${kebab}.model';
 
@@ -193,7 +193,7 @@ export abstract class Find${pascal}sUseCase {
 }
 
 function updatePort(pascal, kebab) {
-  return `import { UseCasePort } from '@shared/domain/ports/use-case.port';
+  return `import { UseCasePort } from '@shared/application/ports/in/use-case.port';
 import { Update${pascal}Command } from '@${kebab}/application/commands/update-${kebab}.command';
 import { ${pascal} } from '@${kebab}/domain/models/${kebab}.model';
 

@@ -27,4 +27,8 @@ export class ListPaginatedCommand {
   get orderBy(): string | undefined {
     return this.props.orderBy;
   }
+
+  get order(): 'ASC' | 'DESC' | undefined {
+    return this.props.order;
+  }
 }

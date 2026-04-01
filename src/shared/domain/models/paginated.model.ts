@@ -40,4 +40,15 @@ export class PaginatedModel<T> {
   get hasPreviousPage(): boolean {
     return this.props.hasPreviousPage;
   }
+
+  toPrimitives() {
+    return {
+      items: this.props.items,
+      totalItems: this.props.totalItems,
+      currentPage: this.props.currentPage,
+      totalPages: this.props.totalPages,
+      hasNextPage: this.props.hasNextPage,
+      hasPreviousPage: this.props.hasPreviousPage,
+    }
+  }
 }

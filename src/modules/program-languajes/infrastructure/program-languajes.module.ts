@@ -6,6 +6,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ProgramLanguajeEntity } from "./adapters/out/persistence/typeorm/entities/program-languaje.entity";
 import { CreateProgramLanguajeService } from "@program-languajes/application/usecases/create-program-languaje.service";
 import { ProgramLanguajeRepositoryPort } from "@program-languajes/application/ports/out/program-languaje-repository.port";
+import { ListProgramLanguajesService } from "@program-languajes/application/usecases/list-program-languajes.service";
+import { ListProgramLanguajesUseCase } from "@program-languajes/application/ports/in/list-program-languajes.port";
 
 @Module({
     imports: [TypeOrmModule.forFeature([ProgramLanguajeEntity])],
@@ -14,6 +16,14 @@ import { ProgramLanguajeRepositoryPort } from "@program-languajes/application/po
         {
             provide: CreateProgramLanguajeUseCase,
             useClass: CreateProgramLanguajeService
+        },
+        {
+            provide: ProgramLanguajeRepositoryPort,
+            useClass: TypeOrmProgramLanguajeRepository
+        },
+        {
+            provide: ListProgramLanguajesUseCase,
+            useClass: ListProgramLanguajesService
         },
         {
             provide: ProgramLanguajeRepositoryPort,
