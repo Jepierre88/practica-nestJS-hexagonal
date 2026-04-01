@@ -15,4 +15,16 @@ export class ListPaginatedCommand {
   static create(props: ListPaginatedCommandProps): ListPaginatedCommand {
     return new ListPaginatedCommand(props);
   }
+
+  get page(): number {
+    return this.props.page;
+  }
+
+  get limit(): number {
+    return this.props.limit;
+  }
+
+  get orderBy(): string | undefined {
+    return this.props.orderBy;
+  }
 }

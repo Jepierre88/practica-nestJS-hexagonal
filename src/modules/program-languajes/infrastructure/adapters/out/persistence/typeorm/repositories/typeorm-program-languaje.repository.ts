@@ -5,6 +5,8 @@ import { ProgramLanguaje } from "src/modules/program-languajes/domain/models/pro
 import { ProgramLanguajeEntity } from "../entities/program-languaje.entity";
 import { Repository } from "typeorm";
 import { ProgramLanguajePersistenceMapper } from "../mappers/program-languaje-persistence.mapper";
+import { PaginatedModel } from "@shared/domain/models/paginated.model";
+import { ListPaginatedCommand } from "@shared/application/commands/list-paginated.command";
 
 @Injectable()
 export class TypeOrmProgramLanguajeRepository implements  ProgramLanguajeRepositoryPort {
@@ -41,6 +43,23 @@ export class TypeOrmProgramLanguajeRepository implements  ProgramLanguajeReposit
       where: { difficulty }
     })
     return ormEntities.map(ProgramLanguajePersistenceMapper.toDomain)
+  }
+
+  async listPaginated(params: ListPaginatedCommand): Promise<PaginatedModel<ProgramLanguaje>> {
+    const [entities, total] = await this.repository.findAndCount({
+      skip: (params.page - 1) * params.limit,
+      take: params.limit,
+    });
+    const items = entities.map(ProgramLanguajePersistenceMapper.toDomain);
+    const totalPages = Math.ceil(total / params.limit);
+    return PaginatedModel.create({
+      items,
+      totalItems: total,
+      currentPage: params.page,
+      totalPages,
+      hasNextPage: params.page < totalPages,
+      hasPreviousPage: params.page > 1,
+    });
   }
   
 }

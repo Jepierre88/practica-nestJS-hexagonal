@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable, map } from 'rxjs';
-import { GeneralResponse } from '@shared/domain/interfaces/general-response.interface';
+import { GeneralResponse } from '@shared/infrastructure/models/general-response.model';
 import { RESPONSE_MESSAGE_KEY } from '@shared/infrastructure/decorators/response-message.decorator';
 
 @Injectable()
