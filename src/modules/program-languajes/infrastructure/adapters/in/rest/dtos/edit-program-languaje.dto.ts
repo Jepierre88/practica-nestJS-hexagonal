@@ -5,20 +5,31 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { DifficultyLevel } from '@program-languajes/domain/value-objects/difficulty-level.vo';
 
 export class EditProgramLanguajeDto {
+  @ApiPropertyOptional({ example: 'TypeScript', minLength: 2, maxLength: 100 })
   @IsOptional()
   @IsString()
   @MaxLength(100)
   @MinLength(2)
   readonly name: string;
 
+  @ApiPropertyOptional({
+    example: 'A typed superset of JavaScript',
+    maxLength: 255,
+  })
   @IsString()
   @IsOptional()
   @MaxLength(255)
   readonly description: string;
 
+  @ApiPropertyOptional({
+    enum: [1, 2, 3],
+    description: '1=EASY, 2=MEDIUM, 3=HARD',
+    example: 2,
+  })
   @IsOptional()
   @IsEnum(DifficultyLevel, {
     message: `Difficulty must be one of: ${Object.values(DifficultyLevel)

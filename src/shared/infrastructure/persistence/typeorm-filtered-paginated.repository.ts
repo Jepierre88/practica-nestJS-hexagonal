@@ -8,6 +8,7 @@ import {
 import { PaginatedModel } from '@shared/domain/models/paginated.model';
 import { ListFilteredPaginatedCommand } from '@shared/application/commands/list-filtered-paginated.command';
 import { DomainModel } from '@shared/domain/models/domain.model';
+import { PageOutOfRangeException } from '@shared/domain/exceptions/page-out-of-range.exception';
 import { FilteredPaginatedRepositoryPort } from '@shared/application/ports/out/filtered-paginated-repository.port';
 import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 
@@ -78,6 +79,10 @@ export abstract class TypeOrmFilteredPaginatedRepository<
 
     const items = entities.map((e) => this.mapper.toDomain(e));
     const totalPages = Math.ceil(total / params.limit) || 1;
+
+    if (total > 0 && params.page > totalPages) {
+      throw new PageOutOfRangeException(params.page, totalPages);
+    }
 
     return PaginatedModel.create({
       items,
