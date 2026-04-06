@@ -44,7 +44,7 @@ export class UsersController {
   @ResponseMessage('Users retrieved successfully')
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.findUsers.findAll();
-    return users.map(UserDtoMapper.toResponse);
+    return users.map((user) => UserDtoMapper.toResponse(user));
   }
 
   @Get(':id')

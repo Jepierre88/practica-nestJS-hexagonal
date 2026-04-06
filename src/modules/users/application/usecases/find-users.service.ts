@@ -6,8 +6,7 @@ import { UserNotFoundException } from '@users/domain/exceptions/user-domain.exce
 
 @Injectable()
 export class FindUsersService implements FindUsersUseCase {
-  constructor(private readonly userRepository: UserRepositoryPort) {
-  }
+  constructor(private readonly userRepository: UserRepositoryPort) {}
 
   async findAll(): Promise<User[]> {
     return this.userRepository.findAll();

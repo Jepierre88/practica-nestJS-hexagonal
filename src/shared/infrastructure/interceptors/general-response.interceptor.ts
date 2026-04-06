@@ -10,16 +10,19 @@ import { GeneralResponse } from '@shared/infrastructure/models/general-response.
 import { RESPONSE_MESSAGE_KEY } from '@shared/infrastructure/decorators/response-message.decorator';
 
 @Injectable()
-export class GeneralResponseInterceptor<T>
-  implements NestInterceptor<T, GeneralResponse<T>>
-{
+export class GeneralResponseInterceptor<T> implements NestInterceptor<
+  T,
+  GeneralResponse<T>
+> {
   constructor(private readonly reflector: Reflector) {}
 
   intercept(
     context: ExecutionContext,
     next: CallHandler<T>,
   ): Observable<GeneralResponse<T>> {
-    const statusCode = context.switchToHttp().getResponse().statusCode;
+    const statusCode = context
+      .switchToHttp()
+      .getResponse<{ statusCode: number }>().statusCode;
     const message =
       this.reflector.get<string>(RESPONSE_MESSAGE_KEY, context.getHandler()) ??
       'Operation completed successfully';

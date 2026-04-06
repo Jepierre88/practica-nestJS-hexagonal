@@ -13,15 +13,22 @@ import { AuthDomainException } from '@auth/domain/exceptions/auth-domain.excepti
 // ─── Domain exception → HTTP status mappings ────────────────
 
 const NOT_FOUND_PATTERNS = ['NotFound', 'NotFoundException'];
-const CONFLICT_PATTERNS = ['AlreadyExists', 'Conflict', 'InvalidStatusTransition'];
+const CONFLICT_PATTERNS = [
+  'AlreadyExists',
+  'Conflict',
+  'InvalidStatusTransition',
+];
 const UNAUTHORIZED_PATTERNS = ['InvalidCredentials'];
 
 function mapDomainToHttpStatus(exception: Error): number {
   const name = exception.constructor.name;
 
-  if (UNAUTHORIZED_PATTERNS.some((p) => name.includes(p))) return HttpStatus.UNAUTHORIZED;
-  if (NOT_FOUND_PATTERNS.some((p) => name.includes(p))) return HttpStatus.NOT_FOUND;
-  if (CONFLICT_PATTERNS.some((p) => name.includes(p))) return HttpStatus.CONFLICT;
+  if (UNAUTHORIZED_PATTERNS.some((p) => name.includes(p)))
+    return HttpStatus.UNAUTHORIZED;
+  if (NOT_FOUND_PATTERNS.some((p) => name.includes(p)))
+    return HttpStatus.NOT_FOUND;
+  if (CONFLICT_PATTERNS.some((p) => name.includes(p)))
+    return HttpStatus.CONFLICT;
 
   return HttpStatus.BAD_REQUEST;
 }
@@ -68,15 +75,23 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       const status = exception.getStatus();
       const res = exception.getResponse();
-      const message =
-        typeof res === 'string'
-          ? res
-          : (res as any).message ?? exception.message;
+      let message: string;
+
+      if (typeof res === 'string') {
+        message = res;
+      } else if (typeof res === 'object' && res !== null && 'message' in res) {
+        const rawMessage = (res as { message: unknown }).message;
+        message = Array.isArray(rawMessage)
+          ? rawMessage.join('; ')
+          : String(rawMessage);
+      } else {
+        message = exception.message;
+      }
 
       return {
         statusCode: status,
         error: exception.name,
-        message: Array.isArray(message) ? message.join('; ') : message,
+        message,
       };
     }
 

@@ -18,7 +18,11 @@ export class TaskStatus {
     ],
     [
       TaskStatusEnum.IN_PROGRESS,
-      new Set([TaskStatusEnum.DONE, TaskStatusEnum.CANCELLED, TaskStatusEnum.PENDING]),
+      new Set([
+        TaskStatusEnum.DONE,
+        TaskStatusEnum.CANCELLED,
+        TaskStatusEnum.PENDING,
+      ]),
     ],
     [TaskStatusEnum.DONE, new Set<TaskStatusEnum>()],
     [TaskStatusEnum.CANCELLED, new Set<TaskStatusEnum>()],

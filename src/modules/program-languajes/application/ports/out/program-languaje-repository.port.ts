@@ -1,11 +1,16 @@
 import { ListPaginatedCommand } from '@shared/application/commands/list-paginated.command';
+import { ListFilteredPaginatedCommand } from '@shared/application/commands/list-filtered-paginated.command';
 import { CrudRepositoryPort } from '@shared/application/ports/out/crud-repository.port';
 import { PaginatedRepositoryPort } from '@shared/application/ports/out/paginated-repository.port';
+import { FilteredPaginatedRepositoryPort } from '@shared/application/ports/out/filtered-paginated-repository.port';
 import { PaginatedModel } from '@shared/domain/models/paginated.model';
 import { ProgramLanguaje } from '@program-languajes/domain/models/program-languaje.model';
 
 export abstract class ProgramLanguajeRepositoryPort
-  implements CrudRepositoryPort<ProgramLanguaje>, PaginatedRepositoryPort
+  implements
+    CrudRepositoryPort<ProgramLanguaje>,
+    PaginatedRepositoryPort,
+    FilteredPaginatedRepositoryPort
 {
   abstract create(entity: ProgramLanguaje): Promise<ProgramLanguaje>;
   abstract findById(id: string): Promise<ProgramLanguaje | null>;
@@ -18,4 +23,7 @@ export abstract class ProgramLanguajeRepositoryPort
   abstract findByName(name: string): Promise<ProgramLanguaje | null>;
   abstract findByDifficulty(difficulty: number): Promise<ProgramLanguaje[]>;
   abstract listPaginated(params: ListPaginatedCommand): Promise<PaginatedModel>;
+  abstract listFilteredPaginated(
+    params: ListFilteredPaginatedCommand,
+  ): Promise<PaginatedModel>;
 }

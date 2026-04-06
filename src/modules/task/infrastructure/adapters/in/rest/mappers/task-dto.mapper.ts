@@ -15,6 +15,6 @@ export class TaskDtoMapper {
   }
 
   static toResponseList(tasks: Task[]): TaskResponseDto[] {
-    return tasks.map(TaskDtoMapper.toResponse);
+    return tasks.map((task) => TaskDtoMapper.toResponse(task));
   }
 }

@@ -14,8 +14,7 @@ export class RegisterUserService implements RegisterUserUseCase {
     private readonly userRepository: UserRepositoryPort,
     private readonly credentialRepository: CredentialRepositoryPort,
     private readonly cryptoService: CryptoPort,
-  ) {
-  }
+  ) {}
 
   async execute(command: CreateUserCommand): Promise<User> {
     const exists = await this.userRepository.existsByEmail(command.email);
@@ -31,7 +30,9 @@ export class RegisterUserService implements RegisterUserUseCase {
 
     const savedUser = await this.userRepository.save(user);
 
-    const passwordHash = await this.cryptoService.hashPassword(command.password);
+    const passwordHash = await this.cryptoService.hashPassword(
+      command.password,
+    );
     const credential = Credential.create({
       userId: savedUser.id!.toString(),
       passwordHash,

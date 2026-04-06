@@ -9,8 +9,7 @@ export class DeleteUserService implements DeleteUserUseCase {
   constructor(
     private readonly userRepository: UserRepositoryPort,
     private readonly credentialRepository: CredentialRepositoryPort,
-  ) {
-  }
+  ) {}
 
   async execute(id: string): Promise<void> {
     const user = await this.userRepository.findById(id);

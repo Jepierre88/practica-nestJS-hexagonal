@@ -1,7 +1,10 @@
 import { TaskId } from '@task/domain/value-objects/task-id.vo';
 import { TaskTitle } from '@task/domain/value-objects/task-title.vo';
 import { TaskDescription } from '@task/domain/value-objects/task-description.vo';
-import { TaskStatus, TaskStatusEnum } from '@task/domain/value-objects/task-status.vo';
+import {
+  TaskStatus,
+  TaskStatusEnum,
+} from '@task/domain/value-objects/task-status.vo';
 import { DomainModel } from '@shared/domain/models/domain.model';
 
 export interface TaskProps {

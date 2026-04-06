@@ -5,7 +5,11 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { AuthDomainException, InvalidCredentialsException, CredentialNotFoundException } from '@auth/domain/exceptions/auth-domain.exception';
+import {
+  AuthDomainException,
+  InvalidCredentialsException,
+  CredentialNotFoundException,
+} from '@auth/domain/exceptions/auth-domain.exception';
 
 @Catch(AuthDomainException)
 export class AuthDomainExceptionFilter implements ExceptionFilter<AuthDomainException> {
@@ -23,8 +27,10 @@ export class AuthDomainExceptionFilter implements ExceptionFilter<AuthDomainExce
   }
 
   private mapToHttpStatus(exception: AuthDomainException): number {
-    if (exception instanceof InvalidCredentialsException) return HttpStatus.UNAUTHORIZED;
-    if (exception instanceof CredentialNotFoundException) return HttpStatus.NOT_FOUND;
+    if (exception instanceof InvalidCredentialsException)
+      return HttpStatus.UNAUTHORIZED;
+    if (exception instanceof CredentialNotFoundException)
+      return HttpStatus.NOT_FOUND;
     return HttpStatus.BAD_REQUEST;
   }
 }

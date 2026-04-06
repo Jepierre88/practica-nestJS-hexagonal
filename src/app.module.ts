@@ -27,7 +27,12 @@ import { GeneralResponseInterceptor } from '@shared/infrastructure/interceptors/
         username: config.get<string>('DB_USERNAME', 'postgres'),
         password: config.get<string>('DB_PASSWORD') ?? 'postgres',
         database: config.get<string>('DB_NAME', 'practice_nest'),
-        entities: [TaskOrmEntity, UserOrmEntity, CredentialOrmEntity, ProgramLanguajeEntity],
+        entities: [
+          TaskOrmEntity,
+          UserOrmEntity,
+          CredentialOrmEntity,
+          ProgramLanguajeEntity,
+        ],
         synchronize: false,
         migrationsRun: true,
         migrations: ['dist/database/migrations/*'],
@@ -37,7 +42,7 @@ import { GeneralResponseInterceptor } from '@shared/infrastructure/interceptors/
     TaskModule,
     AuthModule,
     UsersModule,
-    ProgramLanguajesModule
+    ProgramLanguajesModule,
   ],
   controllers: [],
   providers: [

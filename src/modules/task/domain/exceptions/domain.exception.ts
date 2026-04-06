@@ -7,7 +7,9 @@ export abstract class DomainException extends Error {
 
 export class InvalidTaskTitleException extends DomainException {
   constructor(title: string) {
-    super(`Invalid task title: "${title}". Must be between 3 and 150 characters.`);
+    super(
+      `Invalid task title: "${title}". Must be between 3 and 150 characters.`,
+    );
   }
 }
 

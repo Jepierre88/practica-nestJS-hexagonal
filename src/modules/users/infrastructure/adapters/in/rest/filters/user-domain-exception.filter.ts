@@ -5,8 +5,15 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { UserNotFoundException, UserAlreadyExistsException } from '@users/domain/exceptions/user-domain.exception';
-import { AuthDomainException, InvalidCredentialsException, CredentialNotFoundException } from '@auth/domain/exceptions/auth-domain.exception';
+import {
+  UserNotFoundException,
+  UserAlreadyExistsException,
+} from '@users/domain/exceptions/user-domain.exception';
+import {
+  AuthDomainException,
+  InvalidCredentialsException,
+  CredentialNotFoundException,
+} from '@auth/domain/exceptions/auth-domain.exception';
 import { DomainException } from '@task/domain/exceptions/domain.exception';
 
 type DomainError = DomainException | AuthDomainException;
@@ -28,9 +35,12 @@ export class DomainExceptionFilter implements ExceptionFilter<DomainError> {
 
   private mapToHttpStatus(exception: DomainError): number {
     if (exception instanceof UserNotFoundException) return HttpStatus.NOT_FOUND;
-    if (exception instanceof CredentialNotFoundException) return HttpStatus.NOT_FOUND;
-    if (exception instanceof UserAlreadyExistsException) return HttpStatus.CONFLICT;
-    if (exception instanceof InvalidCredentialsException) return HttpStatus.UNAUTHORIZED;
+    if (exception instanceof CredentialNotFoundException)
+      return HttpStatus.NOT_FOUND;
+    if (exception instanceof UserAlreadyExistsException)
+      return HttpStatus.CONFLICT;
+    if (exception instanceof InvalidCredentialsException)
+      return HttpStatus.UNAUTHORIZED;
     return HttpStatus.BAD_REQUEST;
   }
 }

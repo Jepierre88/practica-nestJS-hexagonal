@@ -1,4 +1,4 @@
-import { Task } from "@task/domain/models/task.model";
+import { Task } from '@task/domain/models/task.model';
 
 export interface CreateTaskCommand {
   readonly title: string;

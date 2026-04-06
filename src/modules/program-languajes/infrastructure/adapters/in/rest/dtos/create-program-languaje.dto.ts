@@ -1,5 +1,12 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
-import { DifficultyLevel } from "@program-languajes/domain/value-objects/difficulty-level.vo";
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import { DifficultyLevel } from '@program-languajes/domain/value-objects/difficulty-level.vo';
 
 export class CreateProgramLanguajeDto {
   @IsNotEmpty()
@@ -15,7 +22,9 @@ export class CreateProgramLanguajeDto {
 
   @IsOptional()
   @IsEnum(DifficultyLevel, {
-    message: `Difficulty must be one of: ${Object.values(DifficultyLevel).filter(v => typeof v === 'number').join(', ')}`,
+    message: `Difficulty must be one of: ${Object.values(DifficultyLevel)
+      .filter((v) => typeof v === 'number')
+      .join(', ')}`,
   })
   readonly difficulty?: DifficultyLevel;
 }

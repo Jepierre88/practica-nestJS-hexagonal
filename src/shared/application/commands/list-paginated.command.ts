@@ -6,9 +6,8 @@ interface ListPaginatedCommandProps {
 }
 
 export class ListPaginatedCommand {
-
   private props: ListPaginatedCommandProps;
-  private constructor(props: ListPaginatedCommandProps){
+  private constructor(props: ListPaginatedCommandProps) {
     this.props = props;
   }
 

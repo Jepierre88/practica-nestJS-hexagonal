@@ -2,7 +2,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 
 // Application — Ports
@@ -42,7 +42,7 @@ import UsersModule from '@users/infrastructure/users.module';
           'JWT_SECRET',
           'super-secret-key-change-in-production',
         ),
-        signOptions: { expiresIn: config.get('JWT_EXPIRES_IN', '1h') as any },
+        signOptions: { expiresIn: config.get('JWT_EXPIRES_IN', '1h') },
       }),
     }),
     forwardRef(() => UsersModule),

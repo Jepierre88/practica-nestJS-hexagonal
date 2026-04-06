@@ -1,16 +1,23 @@
-import { DbSchemas } from "@shared/schemas";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
-import { DifficultyLevel } from "@program-languajes/domain/value-objects/difficulty-level.vo";
+import { DbSchemas } from '@shared/schemas';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
+import { DifficultyLevel } from '@program-languajes/domain/value-objects/difficulty-level.vo';
 
-@Entity("program_languajes", { schema: DbSchemas.Tech })
-@Unique("UQ_PROGRAM_LANGUAJE_NAME", ["name"])
+@Entity('program_languajes', { schema: DbSchemas.Tech })
+@Unique('UQ_PROGRAM_LANGUAJE_NAME', ['name'])
 export class ProgramLanguajeEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   name: string;
-  
+
   @Column({ nullable: true })
   description?: string;
 
@@ -22,5 +29,4 @@ export class ProgramLanguajeEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
-  
 }

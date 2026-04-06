@@ -14,6 +14,11 @@ export class CreateUserCommand {
   ) {}
 
   static create(props: CreateUserCommandProps): CreateUserCommand {
-    return new CreateUserCommand(props.name, props.lastName, props.email, props.password);
+    return new CreateUserCommand(
+      props.name,
+      props.lastName,
+      props.email,
+      props.password,
+    );
   }
 }

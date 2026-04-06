@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { CryptoPort } from '@auth/application/port/in/crypto.port.js';
 import * as bcrypt from 'bcrypt';
 
@@ -10,7 +10,10 @@ export class CryptoService implements CryptoPort {
     return bcrypt.hash(password, CryptoService.SALT_ROUNDS);
   }
 
-  async comparePasswords(password: string, hashedPassword: string): Promise<boolean> {
+  async comparePasswords(
+    password: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
   }
 }
