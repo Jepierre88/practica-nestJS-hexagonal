@@ -11,33 +11,34 @@ export class TypeOrmUserRepository extends UserRepositoryPort {
   constructor(
     @InjectRepository(UserOrmEntity)
     private readonly ormRepo: Repository<UserOrmEntity>,
+    private readonly mapper: UserPersistenceMapper,
   ) {
     super();
   }
 
   async save(user: User): Promise<User> {
-    const orm = UserPersistenceMapper.toOrm(user);
+    const orm = this.mapper.toOrm(user);
     const saved = await this.ormRepo.save(orm);
-    return UserPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async findAll(): Promise<User[]> {
     const rows = await this.ormRepo.find({ order: { createdAt: 'DESC' } });
-    return rows.map(UserPersistenceMapper.toDomain);
+    return rows.map((e) => this.mapper.toDomain(e));
   }
 
   async findById(id: string): Promise<User | null> {
     const row = await this.ormRepo.findOne({ where: { id } });
-    return row ? UserPersistenceMapper.toDomain(row) : null;
+    return row ? this.mapper.toDomain(row) : null;
   }
 
   async findByEmail(email: string): Promise<User | null> {
     const row = await this.ormRepo.findOne({ where: { email } });
-    return row ? UserPersistenceMapper.toDomain(row) : null;
+    return row ? this.mapper.toDomain(row) : null;
   }
 
   async update(user: User): Promise<void> {
-    const orm = UserPersistenceMapper.toOrm(user);
+    const orm = this.mapper.toOrm(user);
     await this.ormRepo.save(orm);
   }
 

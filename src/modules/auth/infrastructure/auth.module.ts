@@ -18,6 +18,7 @@ import { LoginService } from '@auth/application/usecases/login.service';
 // Infrastructure — Persistence
 import { CredentialOrmEntity } from './adapters/out/persistence/typeorm/entities/credential-orm.entity';
 import { TypeOrmCredentialRepository } from './adapters/out/persistence/typeorm/repositories/typeorm-credential.repository';
+import { CredentialPersistenceMapper } from './adapters/out/persistence/typeorm/mappers/credential-persistence.mapper';
 
 // Infrastructure — Auth
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -37,7 +38,10 @@ import UsersModule from '@users/infrastructure/users.module';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET', 'super-secret-key-change-in-production'),
+        secret: config.get<string>(
+          'JWT_SECRET',
+          'super-secret-key-change-in-production',
+        ),
         signOptions: { expiresIn: config.get('JWT_EXPIRES_IN', '1h') as any },
       }),
     }),
@@ -53,6 +57,9 @@ import UsersModule from '@users/infrastructure/users.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+
+    // ─── Mapper ──────────────────────────────────────────────
+    CredentialPersistenceMapper,
 
     // ─── Output Port → Persistence Adapter ─────────────────
     {

@@ -4,6 +4,7 @@ import { TaskOrmEntity } from '@task/infrastructure/adapters/out/persistence/typ
 import { UserOrmEntity } from '@users/infrastructure/adapters/out/persistence/typeorm/entities/user-orm.entity';
 import { CredentialOrmEntity } from '@auth/infrastructure/adapters/out/persistence/typeorm/entities/credential-orm.entity';
 import { ProgramLanguajeEntity } from '@program-languajes/infrastructure/adapters/out/persistence/typeorm/entities/program-languaje.entity';
+import { SubscriptionOrmEntity } from '@enterprise/infrastructure/adapters/out/persistence/typeorm/entities/subscription.entity';
 
 /**
  * DataSource usado por TypeORM CLI para migraciones.
@@ -16,7 +17,13 @@ export default new DataSource({
   username: process.env['DB_USERNAME'] ?? 'postgres',
   password: process.env['DB_PASSWORD'] ?? 'postgres',
   database: process.env['DB_NAME'] ?? 'practice_nest',
-  entities: [TaskOrmEntity, UserOrmEntity, CredentialOrmEntity, ProgramLanguajeEntity],
+  entities: [
+    TaskOrmEntity,
+    UserOrmEntity,
+    CredentialOrmEntity,
+    ProgramLanguajeEntity,
+    SubscriptionOrmEntity,
+  ],
   migrations: ['dist/database/migrations/*'],
   migrationsTableName: 'migrations',
 });

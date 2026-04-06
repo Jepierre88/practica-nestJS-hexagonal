@@ -25,7 +25,8 @@
       "@auth/*": ["src/modules/auth/*"],
       "@users/*": ["src/modules/users/*"],
       "@task/*": ["src/modules/task/*"],
-      "@program-languajes/*": ["src/modules/program-languajes/*"]
+      "@program-languajes/*": ["src/modules/program-languajes/*"],
+      "@enterprise/*": ["src/modules/enterprise/*"]
     }
   }
 }

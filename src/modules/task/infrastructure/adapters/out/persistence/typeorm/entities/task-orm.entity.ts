@@ -1,11 +1,11 @@
 import { DbSchemas } from '@shared/schemas';
+import { UserOrmEntity } from '@users/infrastructure/adapters/out/persistence/typeorm/entities/user-orm.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
@@ -14,24 +14,26 @@ import {
 })
 export class TaskOrmEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', length: 150 })
-  title: string;
+  title!: string;
 
   @Column({ type: 'varchar', length: 500, default: '' })
-  description: string;
+  description!: string;
 
   @Column({ type: 'varchar', length: 20 })
-  status: string;
+  status!: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp with time zone' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @Column({ name: 'user_id', type: 'uuid', nullable: true })
-  userId: string;
+  userId!: string;
 
+  @JoinColumn({ name: 'user_id' })
+  user!: UserOrmEntity;
 }

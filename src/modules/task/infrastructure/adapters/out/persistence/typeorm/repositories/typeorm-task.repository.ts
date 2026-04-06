@@ -11,30 +11,31 @@ export class TypeOrmTaskRepository implements TaskRepositoryPort {
   constructor(
     @InjectRepository(TaskOrmEntity)
     private readonly ormRepository: Repository<TaskOrmEntity>,
-  ){}
+    private readonly mapper: TaskPersistenceMapper,
+  ) {}
 
   async save(task: Task): Promise<Task> {
-    const ormEntity = TaskPersistenceMapper.toOrm(task);
+    const ormEntity = this.mapper.toOrm(task);
     const saved = await this.ormRepository.save(ormEntity);
-    return TaskPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async findAll(): Promise<Task[]> {
     const entities = await this.ormRepository.find({
       order: { createdAt: 'DESC' },
     });
-    return entities.map(TaskPersistenceMapper.toDomain);
+    return entities.map((e) => this.mapper.toDomain(e));
   }
 
   async findById(id: string): Promise<Task | null> {
     const entity = await this.ormRepository.findOne({ where: { id } });
-    return entity ? TaskPersistenceMapper.toDomain(entity) : null;
+    return entity ? this.mapper.toDomain(entity) : null;
   }
 
   async update(task: Task): Promise<Task> {
-    const ormEntity = TaskPersistenceMapper.toOrm(task);
+    const ormEntity = this.mapper.toOrm(task);
     const saved = await this.ormRepository.save(ormEntity);
-    return TaskPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async deleteById(id: string): Promise<void> {

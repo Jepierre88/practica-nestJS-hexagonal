@@ -1,4 +1,4 @@
-import { DomainError } from "@shared/domain/exceptions/domain-error.exception";
+import { DomainError } from '@shared/domain/exceptions/domain-error.exception';
 
 export class InvalidProgramLanguajeIdException extends DomainError {
   constructor(id: string) {

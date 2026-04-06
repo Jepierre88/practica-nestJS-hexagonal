@@ -11,18 +11,18 @@ export class TypeOrmCredentialRepository implements CredentialRepositoryPort {
   constructor(
     @InjectRepository(CredentialOrmEntity)
     private readonly ormRepo: Repository<CredentialOrmEntity>,
-  ) {
-  }
+    private readonly mapper: CredentialPersistenceMapper,
+  ) {}
 
   async save(credential: Credential): Promise<Credential> {
-    const orm = CredentialPersistenceMapper.toOrm(credential);
+    const orm = this.mapper.toOrm(credential);
     const saved = await this.ormRepo.save(orm);
-    return CredentialPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async findByUserId(userId: string): Promise<Credential | null> {
     const row = await this.ormRepo.findOne({ where: { userId } });
-    return row ? CredentialPersistenceMapper.toDomain(row) : null;
+    return row ? this.mapper.toDomain(row) : null;
   }
 
   async deleteByUserId(userId: string): Promise<void> {

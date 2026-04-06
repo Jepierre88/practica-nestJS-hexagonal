@@ -17,6 +17,7 @@ import { DeleteUserService } from '@users/application/usecases/delete-user.servi
 // Infrastructure — Persistence
 import { UserOrmEntity } from './adapters/out/persistence/typeorm/entities/user-orm.entity';
 import { TypeOrmUserRepository } from './adapters/out/persistence/typeorm/repositories/typeorm-user.repository';
+import { UserPersistenceMapper } from './adapters/out/persistence/typeorm/mappers/user-persistence.mapper';
 
 // Infrastructure — REST
 import { UsersController } from './adapters/in/rest/users.controller';
@@ -31,6 +32,9 @@ import AuthModule from '@auth/infrastructure/auth.module';
   ],
   controllers: [UsersController],
   providers: [
+    // ─── Mapper ──────────────────────────────────────────────
+    UserPersistenceMapper,
+
     // ─── Output Port → Persistence Adapter ─────────────────
     {
       provide: UserRepositoryPort,

@@ -1,8 +1,14 @@
+import { Injectable } from '@nestjs/common';
+import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 import { Task } from '@task/domain/models/task.model';
 import { TaskOrmEntity } from '@task/infrastructure/adapters/out/persistence/typeorm/entities/task-orm.entity';
 
-export class TaskPersistenceMapper {
-  static toDomain(entity: TaskOrmEntity): Task {
+@Injectable()
+export class TaskPersistenceMapper extends PersistenceMapper<
+  Task,
+  TaskOrmEntity
+> {
+  toDomain(entity: TaskOrmEntity): Task {
     return Task.reconstruct({
       id: entity.id,
       title: entity.title,
@@ -13,7 +19,7 @@ export class TaskPersistenceMapper {
     });
   }
 
-  static toOrm(task: Task): TaskOrmEntity {
+  toOrm(task: Task): TaskOrmEntity {
     const primitives = task.toPrimitives();
     const entity = new TaskOrmEntity();
     if (primitives.id) {

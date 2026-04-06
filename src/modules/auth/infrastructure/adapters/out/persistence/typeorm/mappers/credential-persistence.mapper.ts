@@ -1,8 +1,14 @@
+import { Injectable } from '@nestjs/common';
+import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 import { Credential } from '@auth/domain/models/credential.model';
 import { CredentialOrmEntity } from '@auth/infrastructure/adapters/out/persistence/typeorm/entities/credential-orm.entity';
 
-export class CredentialPersistenceMapper {
-  static toDomain(orm: CredentialOrmEntity): Credential {
+@Injectable()
+export class CredentialPersistenceMapper extends PersistenceMapper<
+  Credential,
+  CredentialOrmEntity
+> {
+  toDomain(orm: CredentialOrmEntity): Credential {
     return Credential.reconstruct({
       id: orm.id,
       userId: orm.userId,
@@ -12,7 +18,7 @@ export class CredentialPersistenceMapper {
     });
   }
 
-  static toOrm(domain: Credential): CredentialOrmEntity {
+  toOrm(domain: Credential): CredentialOrmEntity {
     const primitives = domain.toPrimitives();
     const orm = new CredentialOrmEntity();
     if (primitives.id) {

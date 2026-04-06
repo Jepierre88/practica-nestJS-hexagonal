@@ -1,4 +1,4 @@
-import { DifficultyLevel } from "@program-languajes/domain/value-objects/difficulty-level.vo";
+import { DifficultyLevel } from '@program-languajes/domain/value-objects/difficulty-level.vo';
 
 interface CreateProgramLanguajeCommandProps {
   readonly name: string;
@@ -7,16 +7,15 @@ interface CreateProgramLanguajeCommandProps {
 }
 
 export class CreateProgramLanguajeCommand {
-
   private props: CreateProgramLanguajeCommandProps;
 
-  private constructor(
-    props: CreateProgramLanguajeCommandProps
-  ) {
+  private constructor(props: CreateProgramLanguajeCommandProps) {
     this.props = props;
   }
 
-  static create(props: CreateProgramLanguajeCommandProps): CreateProgramLanguajeCommand {
+  static create(
+    props: CreateProgramLanguajeCommandProps,
+  ): CreateProgramLanguajeCommand {
     return new CreateProgramLanguajeCommand(props);
   }
 

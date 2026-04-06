@@ -19,6 +19,7 @@ import { DeleteTaskService } from '@task/application/usecases/delete-task.servic
 // Infrastructure — Persistence
 import { TaskOrmEntity } from './adapters/out/persistence/typeorm/entities/task-orm.entity';
 import { TypeOrmTaskRepository } from './adapters/out/persistence/typeorm/repositories/typeorm-task.repository';
+import { TaskPersistenceMapper } from './adapters/out/persistence/typeorm/mappers/task-persistence.mapper';
 
 // Infrastructure — REST
 import { TaskController } from './adapters/in/rest/task.controller';
@@ -27,6 +28,9 @@ import { TaskController } from './adapters/in/rest/task.controller';
   imports: [TypeOrmModule.forFeature([TaskOrmEntity])],
   controllers: [TaskController],
   providers: [
+    // ─── Mapper ──────────────────────────────────────────────
+    TaskPersistenceMapper,
+
     // ─── Output Port → Adapter de persistencia ───────────────
     {
       provide: TaskRepositoryPort,

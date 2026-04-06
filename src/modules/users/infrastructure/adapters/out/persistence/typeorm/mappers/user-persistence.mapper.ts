@@ -1,8 +1,14 @@
+import { Injectable } from '@nestjs/common';
+import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 import { User } from '@users/domain/models/user.model';
 import { UserOrmEntity } from '@users/infrastructure/adapters/out/persistence/typeorm/entities/user-orm.entity';
 
-export class UserPersistenceMapper {
-  static toDomain(orm: UserOrmEntity): User {
+@Injectable()
+export class UserPersistenceMapper extends PersistenceMapper<
+  User,
+  UserOrmEntity
+> {
+  toDomain(orm: UserOrmEntity): User {
     return User.reconstruct({
       id: orm.id,
       name: orm.name,
@@ -13,7 +19,7 @@ export class UserPersistenceMapper {
     });
   }
 
-  static toOrm(domain: User): UserOrmEntity {
+  toOrm(domain: User): UserOrmEntity {
     const primitives = domain.toPrimitives();
     const orm = new UserOrmEntity();
     if (primitives.id) {
