@@ -22,6 +22,7 @@ export class SubscriptionOrmEntity {
     enum: ESubscriptionType,
   })
   subscriptionType!: ESubscriptionType;
+
   @Column({ name: 'start_date', type: 'timestamp with time zone' })
   startDate!: Date;
 

@@ -24,11 +24,13 @@ import { UsersController } from './adapters/in/rest/users.controller';
 
 // Cross-module
 import AuthModule from '@auth/infrastructure/auth.module';
+import { EnterpriseModule } from '@enterprise/infrastructure/enterprise.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserOrmEntity]),
     forwardRef(() => AuthModule),
+    forwardRef(() => EnterpriseModule),
   ],
   controllers: [UsersController],
   providers: [

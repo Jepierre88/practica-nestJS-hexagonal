@@ -2,6 +2,7 @@ import { UserId } from '@users/domain/value-objects/user-id.vo';
 import { UserName } from '@users/domain/value-objects/user-name.vo';
 import { UserEmail } from '@users/domain/value-objects/user-email.vo';
 import { DomainModel } from '@shared/domain/models/domain.model';
+import { Subscription } from '@enterprise/domain/model/subscription.model';
 
 export interface UserProps {
   readonly id?: UserId;
@@ -10,12 +11,14 @@ export interface UserProps {
   readonly email: UserEmail;
   readonly createdAt?: Date;
   readonly updatedAt?: Date;
+  readonly subscription?: Subscription;
 }
 
 export interface CreateUserProps {
   readonly name: string;
   readonly lastName: string;
   readonly email: string;
+  readonly subscription?: Subscription;
 }
 
 export interface ReconstructUserProps {
@@ -23,6 +26,7 @@ export interface ReconstructUserProps {
   readonly name: string;
   readonly lastName: string;
   readonly email: string;
+  readonly subscription?: Subscription;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 }
@@ -40,6 +44,7 @@ export class User extends DomainModel {
       name: UserName.create(input.name),
       lastName: UserName.create(input.lastName),
       email: UserEmail.create(input.email),
+      subscription: input.subscription,
     });
   }
 
@@ -51,6 +56,7 @@ export class User extends DomainModel {
       email: UserEmail.create(input.email),
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
+      subscription: input.subscription,
     });
   }
 
@@ -78,6 +84,10 @@ export class User extends DomainModel {
 
   get updatedAt(): Date | undefined {
     return this.props.updatedAt;
+  }
+
+  get subscription(): Subscription | undefined {
+    return this.props.subscription;
   }
 
   // ─── Comportamiento ──────────────────────────────────────
@@ -110,6 +120,7 @@ export class User extends DomainModel {
     name: string;
     lastName: string;
     email: string;
+    subscriptionId?: string;
     createdAt?: Date;
     updatedAt?: Date;
   } {
@@ -118,6 +129,7 @@ export class User extends DomainModel {
       name: this.props.name.toString(),
       lastName: this.props.lastName.toString(),
       email: this.props.email.toString(),
+      subscriptionId: this.props.subscription?.toPrimitives().id,
       createdAt: this.props.createdAt,
       updatedAt: this.props.updatedAt,
     };

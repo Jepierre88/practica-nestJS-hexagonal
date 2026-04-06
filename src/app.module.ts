@@ -11,6 +11,8 @@ import { CredentialOrmEntity } from '@auth/infrastructure/adapters/out/persisten
 import { ProgramLanguajesModule } from './modules/program-languajes/infrastructure/program-languajes.module';
 import { ProgramLanguajeEntity } from '@program-languajes/infrastructure/adapters/out/persistence/typeorm/entities/program-languaje.entity';
 import { GeneralResponseInterceptor } from '@shared/infrastructure/interceptors/general-response.interceptor';
+import { SubscriptionOrmEntity } from '@enterprise/infrastructure/adapters/out/persistence/typeorm/entities/subscription.entity';
+import { EnterpriseModule } from '@enterprise/infrastructure/enterprise.module';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { GeneralResponseInterceptor } from '@shared/infrastructure/interceptors/
           UserOrmEntity,
           CredentialOrmEntity,
           ProgramLanguajeEntity,
+          SubscriptionOrmEntity,
         ],
         synchronize: false,
         migrationsRun: true,
@@ -43,6 +46,7 @@ import { GeneralResponseInterceptor } from '@shared/infrastructure/interceptors/
     AuthModule,
     UsersModule,
     ProgramLanguajesModule,
+    EnterpriseModule,
   ],
   controllers: [],
   providers: [

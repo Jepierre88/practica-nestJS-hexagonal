@@ -1,9 +1,12 @@
+import { SubscriptionOrmEntity } from '@enterprise/infrastructure/adapters/out/persistence/typeorm/entities/subscription.entity';
 import { DbSchemas } from '@shared/schemas';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -65,4 +68,11 @@ export class UserOrmEntity {
     nullable: true,
   })
   deletedAt!: Date | null;
+
+  @Column({ name: 'subscription_id', type: 'uuid', nullable: true })
+  subscriptionId!: string | null;
+
+  @ManyToOne(() => SubscriptionOrmEntity, { nullable: true, eager: false })
+  @JoinColumn({ name: 'subscription_id' })
+  subscription!: SubscriptionOrmEntity | null;
 }

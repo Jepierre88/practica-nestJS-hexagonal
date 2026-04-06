@@ -5,6 +5,7 @@ import { SubscriptionOrmEntity } from '../entities/subscription.entity';
 import { Repository } from 'typeorm';
 import { Subscription } from '@enterprise/domain/model/subscription.model';
 import { SubscriptionPersistenceMapper } from '../mappers/subcription-persistence.mapper';
+import { ESubscriptionType } from '@enterprise/domain/enums/subscription-type.enum';
 
 @Injectable()
 export class TypeOrmSubscriptionRepository implements SubscriptionRepositoryPort {
@@ -46,5 +47,12 @@ export class TypeOrmSubscriptionRepository implements SubscriptionRepositoryPort
 
   async existsById(id: string): Promise<boolean> {
     return this.subscriptionRepository.existsBy({ id });
+  }
+
+  async findOneByType(type: ESubscriptionType): Promise<Subscription | null> {
+    const ormEntity = await this.subscriptionRepository.findOne({
+      where: { subscriptionType: type },
+    });
+    return ormEntity ? this.mapper.toDomain(ormEntity) : null;
   }
 }

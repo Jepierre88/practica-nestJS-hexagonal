@@ -1,3 +1,4 @@
+import { ESubscriptionType } from '@enterprise/domain/enums/subscription-type.enum';
 import { Subscription } from '@enterprise/domain/model/subscription.model';
 import { CrudRepositoryPort } from '@shared/application/ports/out/crud-repository.port';
 
@@ -7,4 +8,5 @@ export abstract class SubscriptionRepositoryPort implements CrudRepositoryPort<S
   abstract findAll(): Promise<Subscription[]>;
   abstract update(id: string, entity: Subscription): Promise<Subscription>;
   abstract delete(id: string): Promise<void>;
+  abstract findOneByType(type: ESubscriptionType): Promise<Subscription | null>;
 }

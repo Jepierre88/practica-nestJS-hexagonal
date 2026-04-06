@@ -18,7 +18,7 @@ export class RegisterUserDto {
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(100)
-  readonly name: string;
+  readonly name!: string;
 
   @ApiProperty({
     example: 'Doe',
@@ -30,7 +30,7 @@ export class RegisterUserDto {
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(100)
-  readonly lastName: string;
+  readonly lastName!: string;
 
   @ApiProperty({
     example: 'john.doe@example.com',
@@ -38,7 +38,7 @@ export class RegisterUserDto {
   })
   @IsEmail()
   @IsNotEmpty()
-  readonly email: string;
+  readonly email!: string;
 
   @ApiProperty({
     example: 'MyP@ssw0rd',
@@ -50,5 +50,5 @@ export class RegisterUserDto {
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(72)
-  readonly password: string;
+  readonly password!: string;
 }

@@ -7,12 +7,14 @@ import { Credential } from '@auth/domain/models/credential.model';
 import { UserAlreadyExistsException } from '@users/domain/exceptions/user-domain.exception';
 import { CryptoPort } from '@auth/application/port/in/crypto.port';
 import { CreateUserCommand } from '../commands/create-user.command';
+import { UserSubscriptionRepositoryPort } from '@enterprise/application/ports/out/user-subscription-repository.port';
 
 @Injectable()
 export class RegisterUserService implements RegisterUserUseCase {
   constructor(
     private readonly userRepository: UserRepositoryPort,
     private readonly credentialRepository: CredentialRepositoryPort,
+    private readonly userSubscriptionRepository: UserSubscriptionRepositoryPort,
     private readonly cryptoService: CryptoPort,
   ) {}
 
@@ -39,7 +41,9 @@ export class RegisterUserService implements RegisterUserUseCase {
     });
 
     await this.credentialRepository.save(credential);
-
+    await this.userSubscriptionRepository.assignDefaultSubscription(
+      savedUser.id!.toString(),
+    );
     return savedUser;
   }
 }
