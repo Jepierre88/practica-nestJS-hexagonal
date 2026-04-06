@@ -4,7 +4,7 @@ import { ProgramLanguaje } from '@program-languajes/domain/models/program-langua
 import { ProgramLanguajeEntity } from '../entities/program-languaje.entity';
 
 @Injectable()
-export class ProgramLanguajePersistenceMapper extends PersistenceMapper<
+export class ProgramLanguajePersistenceMapper implements PersistenceMapper<
   ProgramLanguaje,
   ProgramLanguajeEntity
 > {

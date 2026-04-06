@@ -21,6 +21,7 @@ import { UserPersistenceMapper } from './adapters/out/persistence/typeorm/mapper
 
 // Infrastructure — REST
 import { UsersController } from './adapters/in/rest/users.controller';
+import { UserDtoMapper } from './adapters/in/rest/mappers/user-dto.mapper';
 
 // Cross-module
 import AuthModule from '@auth/infrastructure/auth.module';
@@ -36,6 +37,7 @@ import { EnterpriseModule } from '@enterprise/infrastructure/enterprise.module';
   providers: [
     // ─── Mapper ──────────────────────────────────────────────
     UserPersistenceMapper,
+    UserDtoMapper,
 
     // ─── Output Port → Persistence Adapter ─────────────────
     {

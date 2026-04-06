@@ -23,6 +23,7 @@ import { TaskPersistenceMapper } from './adapters/out/persistence/typeorm/mapper
 
 // Infrastructure — REST
 import { TaskController } from './adapters/in/rest/task.controller';
+import { TaskDtoMapper } from './adapters/in/rest/mappers/task-dto.mapper';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TaskOrmEntity])],
@@ -30,6 +31,7 @@ import { TaskController } from './adapters/in/rest/task.controller';
   providers: [
     // ─── Mapper ──────────────────────────────────────────────
     TaskPersistenceMapper,
+    TaskDtoMapper,
 
     // ─── Output Port → Adapter de persistencia ───────────────
     {

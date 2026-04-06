@@ -38,6 +38,7 @@ export class UsersController {
     private readonly findUsers: FindUsersUseCase,
     private readonly updateUser: UpdateUserUseCase,
     private readonly deleteUser: DeleteUserUseCase,
+    private readonly userDtoMapper: UserDtoMapper,
   ) {}
 
   @Public()
@@ -57,7 +58,7 @@ export class UsersController {
   @ResponseMessage('User registered successfully')
   async register(@Body() dto: RegisterUserDto): Promise<UserResponseDto> {
     const user = await this.registerUser.execute(CreateUserCommand.create(dto));
-    return UserDtoMapper.toResponse(user);
+    return this.userDtoMapper.toResponse(user);
   }
 
   @Get()
@@ -73,7 +74,7 @@ export class UsersController {
   @ResponseMessage('Users retrieved successfully')
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.findUsers.findAll();
-    return users.map((user) => UserDtoMapper.toResponse(user));
+    return this.userDtoMapper.toResponseList(users);
   }
 
   @Get(':id')
@@ -88,7 +89,7 @@ export class UsersController {
   @ResponseMessage('User retrieved successfully')
   async findById(@Param() params: UuidParam): Promise<UserResponseDto> {
     const user = await this.findUsers.findById(params.id);
-    return UserDtoMapper.toResponse(user);
+    return this.userDtoMapper.toResponse(user);
   }
 
   @Put(':id')
@@ -110,7 +111,7 @@ export class UsersController {
       lastName: dto.lastName,
       email: dto.email,
     });
-    return UserDtoMapper.toResponse(user);
+    return this.userDtoMapper.toResponse(user);
   }
 
   @Delete(':id')

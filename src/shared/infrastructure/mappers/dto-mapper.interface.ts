@@ -5,8 +5,5 @@
  */
 export abstract class DtoMapper<Domain, ResponseDto> {
   abstract toResponse(domain: Domain): ResponseDto;
-
-  toResponseList(domains: Domain[]): ResponseDto[] {
-    return domains.map((d) => this.toResponse(d));
-  }
+  abstract toResponseList(domains: Domain[]): ResponseDto[];
 }

@@ -36,6 +36,7 @@ export class TaskController {
     private readonly findTasksUseCase: FindTasksUseCase,
     private readonly updateTaskUseCase: UpdateTaskUseCase,
     private readonly deleteTaskUseCase: DeleteTaskUseCase,
+    private readonly taskDtoMapper: TaskDtoMapper,
   ) {}
 
   @Post()
@@ -56,7 +57,7 @@ export class TaskController {
       title: dto.title,
       description: dto.description,
     });
-    return TaskDtoMapper.toResponse(task);
+    return this.taskDtoMapper.toResponse(task);
   }
 
   @Get()
@@ -72,7 +73,7 @@ export class TaskController {
   @ResponseMessage('Tasks retrieved successfully')
   async findAll(): Promise<TaskResponseDto[]> {
     const tasks = await this.findTasksUseCase.findAll();
-    return TaskDtoMapper.toResponseList(tasks);
+    return this.taskDtoMapper.toResponseList(tasks);
   }
 
   @Get(':id')
@@ -87,7 +88,7 @@ export class TaskController {
   @ResponseMessage('Task retrieved successfully')
   async findById(@Param() params: UuidParam): Promise<TaskResponseDto> {
     const task = await this.findTasksUseCase.findById(params.id);
-    return TaskDtoMapper.toResponse(task);
+    return this.taskDtoMapper.toResponse(task);
   }
 
   @Put(':id')
@@ -114,7 +115,7 @@ export class TaskController {
       description: dto.description,
       status: dto.status,
     });
-    return TaskDtoMapper.toResponse(task);
+    return this.taskDtoMapper.toResponse(task);
   }
 
   @Delete(':id')
