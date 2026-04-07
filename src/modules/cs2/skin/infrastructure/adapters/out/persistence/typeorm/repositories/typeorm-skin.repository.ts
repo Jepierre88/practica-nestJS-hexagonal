@@ -8,32 +8,39 @@ import { SkinPersistenceMapper } from '../mappers/skin-persistence.mapper';
 
 @Injectable()
 export class TypeOrmSkinRepository implements SkinRepositoryPort {
+  private readonly mapper = new SkinPersistenceMapper();
+
   constructor(
     @InjectRepository(SkinOrmEntity)
     private readonly repository: Repository<SkinOrmEntity>,
   ) {}
 
   async create(entity: Skin): Promise<Skin> {
-    const orm = SkinPersistenceMapper.toOrm(entity);
+    const orm = this.mapper.toOrm(entity);
     const saved = await this.repository.save(orm);
-    return SkinPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async findById(id: string): Promise<Skin | null> {
-    const orm = await this.repository.findOne({ where: { id } });
-    return orm ? SkinPersistenceMapper.toDomain(orm) : null;
+    const orm = await this.repository.findOne({
+      where: { id },
+      relations: ['weapon', 'collection'],
+    });
+    return orm ? this.mapper.toDomain(orm) : null;
   }
 
   async findAll(): Promise<Skin[]> {
-    const entities = await this.repository.findBy({});
-    return entities.map(SkinPersistenceMapper.toDomain);
+    const entities = await this.repository.find({
+      relations: ['weapon', 'collection'],
+    });
+    return entities.map((orm) => this.mapper.toDomain(orm));
   }
 
   async update(id: string, entity: Skin): Promise<Skin> {
-    const orm = SkinPersistenceMapper.toOrm(entity);
+    const orm = this.mapper.toOrm(entity);
     orm.id = id;
     const saved = await this.repository.save(orm);
-    return SkinPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async delete(id: string): Promise<void> {

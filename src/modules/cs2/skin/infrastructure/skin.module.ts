@@ -12,9 +12,15 @@ import { SkinRepositoryPort } from '../application/ports/out/skin-repository.por
 import { TypeOrmSkinRepository } from './adapters/out/persistence/typeorm/repositories/typeorm-skin.repository';
 import { SkinOrmEntity } from './adapters/out/persistence/typeorm/entities/skin-orm.entity';
 import { SkinController } from './adapters/in/rest/skin.controller';
+import { WeaponModule } from '@cs2/weapon/infrastructure/weapon.module';
+import { CollectionModule } from '@cs2/collection/infrastructure/collection.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SkinOrmEntity])],
+  imports: [
+    TypeOrmModule.forFeature([SkinOrmEntity]),
+    WeaponModule,
+    CollectionModule,
+  ],
   controllers: [SkinController],
   providers: [
     { provide: CreateSkinUseCase, useClass: CreateSkinService },

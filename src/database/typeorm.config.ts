@@ -8,7 +8,9 @@ import { SubscriptionOrmEntity } from '@enterprise/infrastructure/adapters/out/p
 import { WeaponOrmEntity } from '@cs2/weapon/infrastructure/adapters/out/persistence/typeorm/entities/weapon-orm.entity';
 import { CollectionOrmEntity } from '@cs2/collection/infrastructure/adapters/out/persistence/typeorm/entities/collection-orm.entity';
 import { OpeningOrmEntity } from '@cs2/opening/infrastructure/adapters/out/persistence/typeorm/entities/opening-orm.entity';
+import { OpeningCaseOrmEntity } from '@cs2/opening/infrastructure/adapters/out/persistence/typeorm/entities/opening-case-orm.entity';
 import { CaseOrmEntity } from '@cs2/case/infrastructure/adapters/out/persistence/typeorm/entities/case-orm.entity';
+import { CaseSkinOrmEntity } from '@cs2/case/infrastructure/adapters/out/persistence/typeorm/entities/case-skin-orm.entity';
 import { SkinOrmEntity } from '@cs2/skin/infrastructure/adapters/out/persistence/typeorm/entities/skin-orm.entity';
 
 /**
@@ -31,7 +33,9 @@ export default new DataSource({
     WeaponOrmEntity,
     SkinOrmEntity,
     CaseOrmEntity,
+    CaseSkinOrmEntity,
     OpeningOrmEntity,
+    OpeningCaseOrmEntity,
     CollectionOrmEntity,
 
   ],

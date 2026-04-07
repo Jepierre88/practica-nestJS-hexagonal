@@ -7,8 +7,7 @@ export interface WeaponProps {
   readonly updatedAt?: Date;
 }
 
-export interface CreateWeaponProps {
-  readonly name: string;
+export interface CreateWeaponProps extends Omit<WeaponProps, 'id' | 'createdAt' | 'updatedAt'> {
 }
 
 export interface ReconstructWeaponProps extends WeaponProps {}

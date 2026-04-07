@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateWeaponDto {
+  @ApiProperty({ example: 'AK-47', minLength: 2, maxLength: 150 })
   @IsNotEmpty()
   @IsString()
   @MinLength(2)

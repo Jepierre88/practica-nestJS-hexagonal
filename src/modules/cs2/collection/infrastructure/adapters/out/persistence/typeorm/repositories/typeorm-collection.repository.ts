@@ -8,32 +8,34 @@ import { CollectionPersistenceMapper } from '../mappers/collection-persistence.m
 
 @Injectable()
 export class TypeOrmCollectionRepository implements CollectionRepositoryPort {
+  private readonly mapper = new CollectionPersistenceMapper();
+
   constructor(
     @InjectRepository(CollectionOrmEntity)
     private readonly repository: Repository<CollectionOrmEntity>,
   ) {}
 
   async create(entity: Collection): Promise<Collection> {
-    const orm = CollectionPersistenceMapper.toOrm(entity);
+    const orm = this.mapper.toOrm(entity);
     const saved = await this.repository.save(orm);
-    return CollectionPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async findById(id: string): Promise<Collection | null> {
     const orm = await this.repository.findOne({ where: { id } });
-    return orm ? CollectionPersistenceMapper.toDomain(orm) : null;
+    return orm ? this.mapper.toDomain(orm) : null;
   }
 
   async findAll(): Promise<Collection[]> {
     const entities = await this.repository.findBy({});
-    return entities.map(CollectionPersistenceMapper.toDomain);
+    return entities.map((orm) => this.mapper.toDomain(orm));
   }
 
   async update(id: string, entity: Collection): Promise<Collection> {
-    const orm = CollectionPersistenceMapper.toOrm(entity);
+    const orm = this.mapper.toOrm(entity);
     orm.id = id;
     const saved = await this.repository.save(orm);
-    return CollectionPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async delete(id: string): Promise<void> {

@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CreateCollectionUseCase } from '@cs2/collection/application/ports/in/create-collection.port';
 import { FindCollectionsUseCase } from '@cs2/collection/application/ports/in/find-collections.port';
 import { UpdateCollectionUseCase } from '@cs2/collection/application/ports/in/update-collection.port';
@@ -10,8 +11,11 @@ import { UpdateCollectionCommand } from '@cs2/collection/application/commands/up
 import { CollectionResponseDto } from './dtos/collection-response.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { CollectionDtoMapper } from './mappers/collection-dto.mapper';
+@ApiTags('CS2 - Collections')
 @Controller('cs2/collections')
 export class CollectionController {
+  private readonly dtoMapper = new CollectionDtoMapper();
+
   constructor(
     private readonly createCollectionUseCase: CreateCollectionUseCase,
     private readonly findCollectionsUseCase: FindCollectionsUseCase,
@@ -21,31 +25,44 @@ export class CollectionController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Crear colección' })
+  @ApiResponse({ status: 201, type: CollectionResponseDto })
   async create(@Body() dto: CreateCollectionDto): Promise<CollectionResponseDto> {
     const entity = await this.createCollectionUseCase.execute(CreateCollectionCommand.create({ ...dto }));
-    return CollectionDtoMapper.toResponse(entity);
+    return this.dtoMapper.toResponse(entity);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar todas las colecciones' })
+  @ApiResponse({ status: 200, type: [CollectionResponseDto] })
   async findAll(): Promise<CollectionResponseDto[]> {
     const entities = await this.findCollectionsUseCase.findAll();
-    return CollectionDtoMapper.toResponseList(entities);
+    return this.dtoMapper.toResponseList(entities);
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Obtener colección por ID' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({ status: 200, type: CollectionResponseDto })
   async findById(@Param() params: UuidParam): Promise<CollectionResponseDto> {
     const entity = await this.findCollectionsUseCase.findById(params.id);
-    return CollectionDtoMapper.toResponse(entity);
+    return this.dtoMapper.toResponse(entity);
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Actualizar colección' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({ status: 200, type: CollectionResponseDto })
   async update(@Param() params: UuidParam, @Body() dto: UpdateCollectionDto): Promise<CollectionResponseDto> {
     const entity = await this.updateCollectionUseCase.execute(UpdateCollectionCommand.create({ id: params.id, ...dto }));
-    return CollectionDtoMapper.toResponse(entity);
+    return this.dtoMapper.toResponse(entity);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Eliminar colección' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({ status: 204 })
   async remove(@Param() params: UuidParam): Promise<void> {
     await this.deleteCollectionUseCase.execute(params.id);
   }

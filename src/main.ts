@@ -36,6 +36,11 @@ async function bootstrap() {
     .addTag('Users', 'Gestión de usuarios')
     .addTag('Tasks', 'Gestión de tareas')
     .addTag('Program Languages', 'Lenguajes de programación')
+    .addTag('CS2 - Weapons', 'Armas de CS2')
+    .addTag('CS2 - Skins', 'Skins de armas')
+    .addTag('CS2 - Collections', 'Colecciones de skins')
+    .addTag('CS2 - Cases', 'Cajas y apertura de cajas')
+    .addTag('CS2 - Openings', 'Historial de aperturas')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);

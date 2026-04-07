@@ -6,4 +6,6 @@ export abstract class OpeningRepositoryPort {
   abstract findAll(): Promise<Opening[]>;
   abstract update(id: string, entity: Opening): Promise<Opening>;
   abstract delete(id: string): Promise<void>;
+  abstract addCase(openingId: string, caseId: string, resultSkinId: string): Promise<void>;
+  abstract removeCase(openingId: string, caseId: string): Promise<void>;
 }

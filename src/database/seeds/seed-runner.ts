@@ -3,6 +3,7 @@ import { Seeder } from './seeder.interface';
 import { TaskSeeder } from './task.seed';
 import { ProgramLanguajeSeeder } from './program-languaje.seed';
 import { UserSeeder } from './user.seed';
+import { Cs2Seeder } from './cs2.seed';
 
 /**
  * Registra aquí todos los seeders en el orden que deben ejecutarse.
@@ -11,6 +12,7 @@ const seeders: Seeder[] = [
   new UserSeeder(),
   new TaskSeeder(),
   new ProgramLanguajeSeeder(),
+  new Cs2Seeder(),
 ];
 
 async function runSeeds(): Promise<void> {

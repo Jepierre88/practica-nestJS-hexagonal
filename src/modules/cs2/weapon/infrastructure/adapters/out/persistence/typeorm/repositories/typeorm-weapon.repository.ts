@@ -8,32 +8,34 @@ import { WeaponPersistenceMapper } from '../mappers/weapon-persistence.mapper';
 
 @Injectable()
 export class TypeOrmWeaponRepository implements WeaponRepositoryPort {
+  private readonly mapper = new WeaponPersistenceMapper();
+
   constructor(
     @InjectRepository(WeaponOrmEntity)
     private readonly repository: Repository<WeaponOrmEntity>,
   ) {}
 
   async create(entity: Weapon): Promise<Weapon> {
-    const orm = WeaponPersistenceMapper.toOrm(entity);
+    const orm = this.mapper.toOrm(entity);
     const saved = await this.repository.save(orm);
-    return WeaponPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async findById(id: string): Promise<Weapon | null> {
     const orm = await this.repository.findOne({ where: { id } });
-    return orm ? WeaponPersistenceMapper.toDomain(orm) : null;
+    return orm ? this.mapper.toDomain(orm) : null;
   }
 
   async findAll(): Promise<Weapon[]> {
     const entities = await this.repository.findBy({});
-    return entities.map(WeaponPersistenceMapper.toDomain);
+    return entities.map((orm) => this.mapper.toDomain(orm));
   }
 
   async update(id: string, entity: Weapon): Promise<Weapon> {
-    const orm = WeaponPersistenceMapper.toOrm(entity);
+    const orm = this.mapper.toOrm(entity);
     orm.id = id;
     const saved = await this.repository.save(orm);
-    return WeaponPersistenceMapper.toDomain(saved);
+    return this.mapper.toDomain(saved);
   }
 
   async delete(id: string): Promise<void> {

@@ -1,8 +1,9 @@
 import { Collection } from '@cs2/collection/domain/models/collection.model';
 import { CollectionOrmEntity } from '../entities/collection-orm.entity';
+import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 
-export class CollectionPersistenceMapper {
-  static toOrm(domain: Collection): CollectionOrmEntity {
+export class CollectionPersistenceMapper extends PersistenceMapper<Collection, CollectionOrmEntity> {
+  toOrm(domain: Collection): CollectionOrmEntity {
     const primitives = domain.toPrimitives();
     const orm = new CollectionOrmEntity();
     if (primitives.id) orm.id = primitives.id;
@@ -10,7 +11,7 @@ export class CollectionPersistenceMapper {
     return orm;
   }
 
-  static toDomain(orm: CollectionOrmEntity): Collection {
+  toDomain(orm: CollectionOrmEntity): Collection {
     return Collection.reconstruct({
       id: orm.id,
       name: orm.name,
