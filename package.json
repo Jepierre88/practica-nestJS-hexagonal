@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "generate:module": "node scripts/generate-module.js",
+    "generate:submodule": "node scripts/generate-submodule.js",
     "build": "nest build && tsc-alias",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",

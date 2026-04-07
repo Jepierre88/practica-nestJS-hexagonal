@@ -3,4 +3,5 @@ export enum DbSchemas {
   Auth = 'auth',
   Tech = 'tech',
   Enterprise = 'enterprise',
+  Cs2 = 'cs2',
 }

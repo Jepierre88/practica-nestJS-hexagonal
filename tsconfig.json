@@ -26,7 +26,12 @@
       "@users/*": ["src/modules/users/*"],
       "@task/*": ["src/modules/task/*"],
       "@program-languajes/*": ["src/modules/program-languajes/*"],
-      "@enterprise/*": ["src/modules/enterprise/*"]
+      "@enterprise/*": ["src/modules/enterprise/*"],
+      "@cs2/weapon/*": ["src/modules/cs2/weapon/*"],
+      "@cs2/skin/*": ["src/modules/cs2/skin/*"],
+      "@cs2/case/*": ["src/modules/cs2/case/*"],
+      "@cs2/opening/*": ["src/modules/cs2/opening/*"],
+      "@cs2/collection/*": ["src/modules/cs2/collection/*"]
     }
   }
 }

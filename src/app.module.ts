@@ -13,6 +13,12 @@ import { ProgramLanguajeEntity } from '@program-languajes/infrastructure/adapter
 import { GeneralResponseInterceptor } from '@shared/infrastructure/interceptors/general-response.interceptor';
 import { SubscriptionOrmEntity } from '@enterprise/infrastructure/adapters/out/persistence/typeorm/entities/subscription.entity';
 import { EnterpriseModule } from '@enterprise/infrastructure/enterprise.module';
+import { Cs2Module } from './modules/cs2/cs2.module';
+import { CaseOrmEntity } from '@cs2/case/infrastructure/adapters/out/persistence/typeorm/entities/case-orm.entity';
+import { CollectionOrmEntity } from '@cs2/collection/infrastructure/adapters/out/persistence/typeorm/entities/collection-orm.entity';
+import { OpeningOrmEntity } from '@cs2/opening/infrastructure/adapters/out/persistence/typeorm/entities/opening-orm.entity';
+import { SkinOrmEntity } from '@cs2/skin/infrastructure/adapters/out/persistence/typeorm/entities/skin-orm.entity';
+import { WeaponOrmEntity } from '@cs2/weapon/infrastructure/adapters/out/persistence/typeorm/entities/weapon-orm.entity';
 
 @Module({
   imports: [
@@ -35,6 +41,11 @@ import { EnterpriseModule } from '@enterprise/infrastructure/enterprise.module';
           CredentialOrmEntity,
           ProgramLanguajeEntity,
           SubscriptionOrmEntity,
+          WeaponOrmEntity,
+          SkinOrmEntity,
+          CaseOrmEntity,
+          OpeningOrmEntity,
+          CollectionOrmEntity,
         ],
         synchronize: false,
         migrationsRun: true,
@@ -47,6 +58,7 @@ import { EnterpriseModule } from '@enterprise/infrastructure/enterprise.module';
     UsersModule,
     ProgramLanguajesModule,
     EnterpriseModule,
+    Cs2Module
   ],
   controllers: [],
   providers: [

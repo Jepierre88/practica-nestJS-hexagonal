@@ -96,7 +96,7 @@ export class ${pascal} extends DomainModel {
 }
 
 function domainException(pascal, kebab) {
-  return `import { DomainError } from '@shared/exceptions/domain-error.exception';
+  return `import { DomainError } from '@shared/domain/exceptions/domain-error.exception';
 
 export class ${pascal}NotFoundException extends DomainError {
   constructor(identifier: string) {
@@ -516,7 +516,7 @@ function exceptionFilter(pascal, kebab) {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { DomainError } from '@shared/exceptions/domain-error.exception';
+import { DomainError } from '@shared/domain/exceptions/domain-error.exception';
 import { ${pascal}NotFoundException } from '@${kebab}/domain/exceptions/${kebab}.exception';
 
 @Catch(DomainError)
@@ -546,7 +546,7 @@ export class ${pascal}DomainExceptionFilter implements ExceptionFilter {
 
 function controller(pascal, kebab, camel, pluralKebab, crud) {
   const imports = [
-    `import { Controller, Post, Body, HttpCode, HttpStatus, UseFilters } from '@nestjs/common';`,
+    `import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';`,
   ];
   const injects = [`private readonly create${pascal}UseCase: Create${pascal}UseCase,`];
   const importPorts = [`import { Create${pascal}UseCase } from '@${kebab}/application/ports/in/create-${kebab}.port';`];
@@ -562,7 +562,7 @@ function controller(pascal, kebab, camel, pluralKebab, crud) {
   }`;
 
   if (crud) {
-    imports[0] = `import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus, UseFilters } from '@nestjs/common';`;
+    imports[0] = `import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';`;
     injects.push(
       `private readonly find${pascal}sUseCase: Find${pascal}sUseCase,`,
       `private readonly update${pascal}UseCase: Update${pascal}UseCase,`,
@@ -613,10 +613,8 @@ ${importCommands.join('\n')}
 import { ${pascal}ResponseDto } from './dtos/${kebab}-response.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { ${pascal}DtoMapper } from './mappers/${kebab}-dto.mapper';
-import { ${pascal}DomainExceptionFilter } from './filters/${kebab}-domain-exception.filter';
 
 @Controller('${pluralKebab}')
-@UseFilters(${pascal}DomainExceptionFilter)
 export class ${pascal}Controller {
   constructor(
     ${injects.join('\n    ')}
@@ -744,7 +742,6 @@ async function main() {
     writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'dtos', `update-${kebab}.dto.ts`), updateDto(pascal, kebab));
   }
   writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'mappers', `${kebab}-dto.mapper.ts`), dtoMapper(pascal, kebab));
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'filters', `${kebab}-domain-exception.filter.ts`), exceptionFilter(pascal, kebab));
   writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', `${kebab}.controller.ts`), controller(pascal, kebab, camel, pluralKebab, crud));
 
   // Infrastructure — Module

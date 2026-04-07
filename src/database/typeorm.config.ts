@@ -5,6 +5,11 @@ import { UserOrmEntity } from '@users/infrastructure/adapters/out/persistence/ty
 import { CredentialOrmEntity } from '@auth/infrastructure/adapters/out/persistence/typeorm/entities/credential-orm.entity';
 import { ProgramLanguajeEntity } from '@program-languajes/infrastructure/adapters/out/persistence/typeorm/entities/program-languaje.entity';
 import { SubscriptionOrmEntity } from '@enterprise/infrastructure/adapters/out/persistence/typeorm/entities/subscription.entity';
+import { WeaponOrmEntity } from '@cs2/weapon/infrastructure/adapters/out/persistence/typeorm/entities/weapon-orm.entity';
+import { CollectionOrmEntity } from '@cs2/collection/infrastructure/adapters/out/persistence/typeorm/entities/collection-orm.entity';
+import { OpeningOrmEntity } from '@cs2/opening/infrastructure/adapters/out/persistence/typeorm/entities/opening-orm.entity';
+import { CaseOrmEntity } from '@cs2/case/infrastructure/adapters/out/persistence/typeorm/entities/case-orm.entity';
+import { SkinOrmEntity } from '@cs2/skin/infrastructure/adapters/out/persistence/typeorm/entities/skin-orm.entity';
 
 /**
  * DataSource usado por TypeORM CLI para migraciones.
@@ -23,6 +28,12 @@ export default new DataSource({
     CredentialOrmEntity,
     ProgramLanguajeEntity,
     SubscriptionOrmEntity,
+    WeaponOrmEntity,
+    SkinOrmEntity,
+    CaseOrmEntity,
+    OpeningOrmEntity,
+    CollectionOrmEntity,
+
   ],
   migrations: ['dist/database/migrations/*'],
   migrationsTableName: 'migrations',
