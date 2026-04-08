@@ -16,12 +16,10 @@ export interface CreateOpeningProps {
 
 export interface ReconstructOpeningProps extends OpeningProps {}
 
-export class Opening extends DomainModel {
-  private readonly props: OpeningProps;
-
+export interface Opening extends Readonly<OpeningProps> {}
+export class Opening extends DomainModel<OpeningProps> {
   private constructor(props: OpeningProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(props: CreateOpeningProps): Opening {
@@ -33,18 +31,6 @@ export class Opening extends DomainModel {
 
   static reconstruct(props: ReconstructOpeningProps): Opening {
     return new Opening(props);
-  }
-
-  get id(): string | undefined {
-    return this.props.id;
-  }
-
-  get name(): string {
-    return this.props.name;
-  }
-
-  get openingCases(): OpeningCase[] {
-    return this.props.openingCases;
   }
 
   toPrimitives() {

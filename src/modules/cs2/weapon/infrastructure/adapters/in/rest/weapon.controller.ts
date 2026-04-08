@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CreateWeaponUseCase } from '@cs2/weapon/application/ports/in/create-weapon.port';
 import { FindWeaponsUseCase } from '@cs2/weapon/application/ports/in/find-weapons.port';
@@ -28,7 +38,7 @@ export class WeaponController {
   @ApiOperation({ summary: 'Crear arma' })
   @ApiResponse({ status: 201, type: WeaponResponseDto })
   async create(@Body() dto: CreateWeaponDto): Promise<WeaponResponseDto> {
-    const entity = await this.createWeaponUseCase.execute(CreateWeaponCommand.create({ ...dto }));
+    const entity = await this.createWeaponUseCase.execute({ ...dto });
     return this.dtoMapper.toResponse(entity);
   }
 
@@ -53,8 +63,14 @@ export class WeaponController {
   @ApiOperation({ summary: 'Actualizar arma' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: WeaponResponseDto })
-  async update(@Param() params: UuidParam, @Body() dto: UpdateWeaponDto): Promise<WeaponResponseDto> {
-    const entity = await this.updateWeaponUseCase.execute(UpdateWeaponCommand.create({ id: params.id, ...dto }));
+  async update(
+    @Param() params: UuidParam,
+    @Body() dto: UpdateWeaponDto,
+  ): Promise<WeaponResponseDto> {
+    const entity = await this.updateWeaponUseCase.execute({
+      id: params.id,
+      ...dto,
+    });
     return this.dtoMapper.toResponse(entity);
   }
 

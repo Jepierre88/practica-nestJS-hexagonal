@@ -26,7 +26,6 @@ import { UuidParam } from './dtos/uuid-param.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { UserDtoMapper } from './mappers/user-dto.mapper';
 import { Public } from '@auth/infrastructure/adapters/in/rest/decorators/public.decorator';
-import { CreateUserCommand } from '@users/application/commands/create-user.command';
 import { ResponseMessage } from '@shared/infrastructure/decorators/response-message.decorator';
 
 @ApiTags('Users')
@@ -57,7 +56,7 @@ export class UsersController {
   @ApiResponse({ status: 409, description: 'El email ya existe' })
   @ResponseMessage('User registered successfully')
   async register(@Body() dto: RegisterUserDto): Promise<UserResponseDto> {
-    const user = await this.registerUser.execute(CreateUserCommand.create(dto));
+    const user = await this.registerUser.execute(dto);
     return this.userDtoMapper.toResponse(user);
   }
 

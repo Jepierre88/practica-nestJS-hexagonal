@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CreateOpeningUseCase } from '@cs2/opening/application/ports/in/create-opening.port';
 import { FindOpeningsUseCase } from '@cs2/opening/application/ports/in/find-openings.port';
@@ -34,7 +44,7 @@ export class OpeningController {
   @ApiOperation({ summary: 'Crear apertura' })
   @ApiResponse({ status: 201, type: OpeningResponseDto })
   async create(@Body() dto: CreateOpeningDto): Promise<OpeningResponseDto> {
-    const entity = await this.createOpeningUseCase.execute(CreateOpeningCommand.create({ ...dto }));
+    const entity = await this.createOpeningUseCase.execute({ ...dto });
     return this.dtoMapper.toResponse(entity);
   }
 
@@ -59,8 +69,14 @@ export class OpeningController {
   @ApiOperation({ summary: 'Actualizar apertura' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: OpeningResponseDto })
-  async update(@Param() params: UuidParam, @Body() dto: UpdateOpeningDto): Promise<OpeningResponseDto> {
-    const entity = await this.updateOpeningUseCase.execute(UpdateOpeningCommand.create({ id: params.id, ...dto }));
+  async update(
+    @Param() params: UuidParam,
+    @Body() dto: UpdateOpeningDto,
+  ): Promise<OpeningResponseDto> {
+    const entity = await this.updateOpeningUseCase.execute({
+      id: params.id,
+      ...dto,
+    });
     return this.dtoMapper.toResponse(entity);
   }
 
@@ -78,10 +94,14 @@ export class OpeningController {
   @ApiOperation({ summary: 'Agregar caja a apertura' })
   @ApiParam({ name: 'id', type: String, description: 'ID de la apertura' })
   @ApiResponse({ status: 201, type: OpeningResponseDto })
-  async addCase(@Param() params: UuidParam, @Body() dto: AddCaseToOpeningDto): Promise<OpeningResponseDto> {
-    const entity = await this.manageOpeningCasesUseCase.addCase(
-      AddCaseToOpeningCommand.create({ openingId: params.id, ...dto }),
-    );
+  async addCase(
+    @Param() params: UuidParam,
+    @Body() dto: AddCaseToOpeningDto,
+  ): Promise<OpeningResponseDto> {
+    const entity = await this.manageOpeningCasesUseCase.addCase({
+      openingId: params.id,
+      ...dto,
+    });
     return this.dtoMapper.toResponse(entity);
   }
 
@@ -95,9 +115,10 @@ export class OpeningController {
     @Param('id') openingId: string,
     @Param('caseId') caseId: string,
   ): Promise<OpeningResponseDto> {
-    const entity = await this.manageOpeningCasesUseCase.removeCase(
-      RemoveCaseFromOpeningCommand.create({ openingId, caseId }),
-    );
+    const entity = await this.manageOpeningCasesUseCase.removeCase({
+      openingId,
+      caseId,
+    });
     return this.dtoMapper.toResponse(entity);
   }
 }

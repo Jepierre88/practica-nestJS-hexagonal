@@ -1,13 +1,3 @@
-export interface CreateOpeningCommandProps {
+export interface CreateOpeningCommand {
   readonly name: string;
-}
-
-export class CreateOpeningCommand {
-  private constructor(
-    public readonly name: string,
-  ) {}
-
-  static create(props: CreateOpeningCommandProps): CreateOpeningCommand {
-    return new CreateOpeningCommand(props.name);
-  }
 }

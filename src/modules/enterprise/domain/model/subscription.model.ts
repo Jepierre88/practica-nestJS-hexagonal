@@ -17,11 +17,10 @@ type CreateSubscriptionProps = Omit<
 
 type ReconstructSubscriptionProps = SubscriptionProps;
 
-export class Subscription implements DomainModel {
-  private readonly props: SubscriptionProps;
-
+export interface Subscription extends Readonly<SubscriptionProps> {}
+export class Subscription extends DomainModel<SubscriptionProps> {
   private constructor(props: SubscriptionProps) {
-    this.props = props;
+    super(props);
   }
 
   static create(props: CreateSubscriptionProps): Subscription {

@@ -31,12 +31,10 @@ export interface ReconstructUserProps {
   readonly updatedAt: Date;
 }
 
-export class User extends DomainModel {
-  private readonly props: UserProps;
-
+export interface User extends Readonly<UserProps> {}
+export class User extends DomainModel<UserProps> {
   private constructor(props: UserProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(input: CreateUserProps): User {
@@ -58,36 +56,6 @@ export class User extends DomainModel {
       updatedAt: input.updatedAt,
       subscription: input.subscription,
     });
-  }
-
-  // ─── Getters ──────────────────────────────────────────────
-
-  get id(): UserId | undefined {
-    return this.props.id;
-  }
-
-  get name(): UserName {
-    return this.props.name;
-  }
-
-  get lastName(): UserName {
-    return this.props.lastName;
-  }
-
-  get email(): UserEmail {
-    return this.props.email;
-  }
-
-  get createdAt(): Date | undefined {
-    return this.props.createdAt;
-  }
-
-  get updatedAt(): Date | undefined {
-    return this.props.updatedAt;
-  }
-
-  get subscription(): Subscription | undefined {
-    return this.props.subscription;
   }
 
   // ─── Comportamiento ──────────────────────────────────────

@@ -7,22 +7,20 @@ export interface OpeningCaseProps {
   readonly resultSkin: Skin;
 }
 
-export class OpeningCase extends DomainModel {
-  private constructor(
-    public readonly case_: Case,
-    public readonly resultSkin: Skin,
-  ) {
-    super();
+export interface OpeningCase extends Readonly<OpeningCaseProps> {}
+export class OpeningCase extends DomainModel<OpeningCaseProps> {
+  private constructor(props: OpeningCaseProps) {
+    super(props);
   }
 
   static create(props: OpeningCaseProps): OpeningCase {
-    return new OpeningCase(props.case, props.resultSkin);
+    return new OpeningCase(props);
   }
 
   toPrimitives() {
     return {
-      case: this.case_.toPrimitives(),
-      resultSkin: this.resultSkin.toPrimitives(),
+      case: this.props.case.toPrimitives(),
+      resultSkin: this.props.resultSkin.toPrimitives(),
     };
   }
 }

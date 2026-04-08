@@ -18,12 +18,10 @@ interface CreateProgramLanguajeProps {
 
 type ReconstructProgramLanguajeProps = ProgramLanguajeProps;
 
-export class ProgramLanguaje extends DomainModel {
-  private readonly props: ProgramLanguajeProps;
-
+export interface ProgramLanguaje extends Readonly<ProgramLanguajeProps> {}
+export class ProgramLanguaje extends DomainModel<ProgramLanguajeProps> {
   private constructor(props: ProgramLanguajeProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(props: CreateProgramLanguajeProps): ProgramLanguaje {

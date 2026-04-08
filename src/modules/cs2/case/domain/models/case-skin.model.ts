@@ -6,25 +6,25 @@ export interface CaseSkinProps {
   readonly dropRate: number;
 }
 
-export class CaseSkin extends DomainModel {
-  private constructor(
-    public readonly skin: Skin,
-    public readonly dropRate: number,
-  ) {
-    super();
+export interface CaseSkin extends Readonly<CaseSkinProps> {}
+export class CaseSkin extends DomainModel<CaseSkinProps> {
+  private constructor(props: CaseSkinProps) {
+    super(props);
   }
 
   static create(props: CaseSkinProps): CaseSkin {
     if (props.dropRate < 0 || props.dropRate > 100) {
-      throw new Error(`Drop rate must be between 0 and 100, got ${props.dropRate}`);
+      throw new Error(
+        `Drop rate must be between 0 and 100, got ${props.dropRate}`,
+      );
     }
-    return new CaseSkin(props.skin, props.dropRate);
+    return new CaseSkin(props);
   }
 
   toPrimitives() {
     return {
-      skin: this.skin.toPrimitives(),
-      dropRate: this.dropRate,
+      skin: this.props.skin.toPrimitives(),
+      dropRate: this.props.dropRate,
     };
   }
 }

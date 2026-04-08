@@ -13,12 +13,10 @@ export interface CreateCollectionProps {
 
 export interface ReconstructCollectionProps extends CollectionProps {}
 
-export class Collection extends DomainModel {
-  private readonly props: CollectionProps;
-
+export interface Collection extends Readonly<CollectionProps> {}
+export class Collection extends DomainModel<CollectionProps> {
   private constructor(props: CollectionProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(props: CreateCollectionProps): Collection {
@@ -27,14 +25,6 @@ export class Collection extends DomainModel {
 
   static reconstruct(props: ReconstructCollectionProps): Collection {
     return new Collection(props);
-  }
-
-  get id(): string | undefined {
-    return this.props.id;
-  }
-
-  get name(): string {
-    return this.props.name;
   }
 
   toPrimitives() {

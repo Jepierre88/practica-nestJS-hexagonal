@@ -18,12 +18,10 @@ export interface CreateCaseProps {
 
 export interface ReconstructCaseProps extends CaseProps {}
 
-export class Case extends DomainModel {
-  private readonly props: CaseProps;
-
+export interface Case extends Readonly<CaseProps> {}
+export class Case extends DomainModel<CaseProps> {
   private constructor(props: CaseProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(props: CreateCaseProps): Case {
@@ -35,22 +33,6 @@ export class Case extends DomainModel {
 
   static reconstruct(props: ReconstructCaseProps): Case {
     return new Case(props);
-  }
-
-  get id(): string | undefined {
-    return this.props.id;
-  }
-
-  get name(): string {
-    return this.props.name;
-  }
-
-  get price(): number {
-    return this.props.price;
-  }
-
-  get caseSkins(): CaseSkin[] {
-    return this.props.caseSkins;
   }
 
   toPrimitives() {

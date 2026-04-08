@@ -50,9 +50,7 @@ export class ProgramLanguajesController {
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ResponseMessage('Program language created successfully')
   async create(@Body() createProgramLanguajeDto: CreateProgramLanguajeDto) {
-    const command = CreateProgramLanguajeCommand.create(
-      createProgramLanguajeDto,
-    );
+    const command: CreateProgramLanguajeCommand = createProgramLanguajeDto;
     const programLanguaje =
       await this.createProgramLanguajeUseCase.execute(command);
     return programLanguaje.toPrimitives();
@@ -67,14 +65,14 @@ export class ProgramLanguajesController {
   @ResponseMessage('Program languages listed successfully')
   async list(@Query() query: ListFilteredPaginatedQueryDto) {
     const { search, orderBy, order, page, limit, ...rest } = query;
-    const command = ListFilteredPaginatedCommand.create({
+    const command: ListFilteredPaginatedCommand = {
       page,
       limit,
       orderBy,
       order,
       search,
       filters: rest,
-    });
+    };
     const programLanguajes =
       await this.listProgramLanguajesUseCase.execute(command);
     return programLanguajes.toPrimitives();
@@ -99,10 +97,10 @@ export class ProgramLanguajesController {
     id: string,
     @Body() editProgramLanguajeDto: EditProgramLanguajeDto,
   ) {
-    const command = EditProgramLanguajeCommand.create({
+    const command: EditProgramLanguajeCommand = {
       id,
       ...editProgramLanguajeDto,
-    });
+    };
     const updatedProgramLanguaje =
       await this.editProgramLanguajeUseCase.execute(command);
     return updatedProgramLanguaje.toPrimitives();

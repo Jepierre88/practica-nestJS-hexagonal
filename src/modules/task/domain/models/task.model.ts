@@ -30,12 +30,10 @@ export interface ReconstructTaskProps {
   readonly updatedAt: Date;
 }
 
-export class Task extends DomainModel {
-  private readonly props: TaskProps;
-
+export interface Task extends Readonly<TaskProps> {}
+export class Task extends DomainModel<TaskProps> {
   private constructor(props: TaskProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   /**
@@ -67,32 +65,6 @@ export class Task extends DomainModel {
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
     });
-  }
-
-  // ─── Getters ──────────────────────────────────────────────
-
-  get id(): TaskId | undefined {
-    return this.props.id;
-  }
-
-  get title(): TaskTitle {
-    return this.props.title;
-  }
-
-  get description(): TaskDescription {
-    return this.props.description;
-  }
-
-  get status(): TaskStatus {
-    return this.props.status;
-  }
-
-  get createdAt(): Date | undefined {
-    return this.props.createdAt;
-  }
-
-  get updatedAt(): Date | undefined {
-    return this.props.updatedAt;
   }
 
   // ─── Comportamiento de dominio ────────────────────────────

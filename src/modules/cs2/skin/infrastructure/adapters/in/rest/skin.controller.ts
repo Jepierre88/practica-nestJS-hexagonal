@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CreateSkinUseCase } from '@cs2/skin/application/ports/in/create-skin.port';
 import { FindSkinsUseCase } from '@cs2/skin/application/ports/in/find-skins.port';
@@ -28,7 +38,7 @@ export class SkinController {
   @ApiOperation({ summary: 'Crear skin' })
   @ApiResponse({ status: 201, type: SkinResponseDto })
   async create(@Body() dto: CreateSkinDto): Promise<SkinResponseDto> {
-    const entity = await this.createSkinUseCase.execute(CreateSkinCommand.create({ ...dto }));
+    const entity = await this.createSkinUseCase.execute({ ...dto });
     return this.dtoMapper.toResponse(entity);
   }
 
@@ -53,8 +63,14 @@ export class SkinController {
   @ApiOperation({ summary: 'Actualizar skin' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: SkinResponseDto })
-  async update(@Param() params: UuidParam, @Body() dto: UpdateSkinDto): Promise<SkinResponseDto> {
-    const entity = await this.updateSkinUseCase.execute(UpdateSkinCommand.create({ id: params.id, ...dto }));
+  async update(
+    @Param() params: UuidParam,
+    @Body() dto: UpdateSkinDto,
+  ): Promise<SkinResponseDto> {
+    const entity = await this.updateSkinUseCase.execute({
+      id: params.id,
+      ...dto,
+    });
     return this.dtoMapper.toResponse(entity);
   }
 

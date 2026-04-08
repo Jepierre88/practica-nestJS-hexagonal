@@ -7,17 +7,17 @@ export interface WeaponProps {
   readonly updatedAt?: Date;
 }
 
-export interface CreateWeaponProps extends Omit<WeaponProps, 'id' | 'createdAt' | 'updatedAt'> {
-}
+export interface CreateWeaponProps extends Omit<
+  WeaponProps,
+  'id' | 'createdAt' | 'updatedAt'
+> {}
 
 export interface ReconstructWeaponProps extends WeaponProps {}
 
-export class Weapon extends DomainModel {
-  private readonly props: WeaponProps;
-
+export interface Weapon extends Readonly<WeaponProps> {}
+export class Weapon extends DomainModel<WeaponProps> {
   private constructor(props: WeaponProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(props: CreateWeaponProps): Weapon {
@@ -26,14 +26,6 @@ export class Weapon extends DomainModel {
 
   static reconstruct(props: ReconstructWeaponProps): Weapon {
     return new Weapon(props);
-  }
-
-  get id(): string | undefined {
-    return this.props.id;
-  }
-
-  get name(): string {
-    return this.props.name;
   }
 
   toPrimitives() {

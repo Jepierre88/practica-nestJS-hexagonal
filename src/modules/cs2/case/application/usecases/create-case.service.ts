@@ -17,15 +17,22 @@ export class CreateCaseService implements CreateCaseUseCase {
 
   async execute(command: CreateCaseCommand): Promise<Case> {
     if (command.mode === 'price') {
-      return this.createWithPrice(command.props as { mode: 'price'; name: string; price: number; skinIds: string[] });
+      return this.createWithPrice(command);
     }
 
-    return this.createWithRates(command.props as { mode: 'rates'; name: string; skins: { skinId: string; dropRate: number }[] });
+    return this.createWithRates(command);
   }
 
-  private async createWithPrice(props: { name: string; price: number; skinIds: string[] }): Promise<Case> {
+  private async createWithPrice(props: {
+    name: string;
+    price: number;
+    skinIds: string[];
+  }): Promise<Case> {
     const skins = await this.resolveSkins(props.skinIds);
-    const calculated = CasePricingService.calculateDropRates(props.price, skins);
+    const calculated = CasePricingService.calculateDropRates(
+      props.price,
+      skins,
+    );
 
     const caseSkins = calculated.map(({ skin, dropRate }) =>
       CaseSkin.create({ skin, dropRate }),
@@ -36,7 +43,10 @@ export class CreateCaseService implements CreateCaseUseCase {
     );
   }
 
-  private async createWithRates(props: { name: string; skins: { skinId: string; dropRate: number }[] }): Promise<Case> {
+  private async createWithRates(props: {
+    name: string;
+    skins: { skinId: string; dropRate: number }[];
+  }): Promise<Case> {
     const skinIds = props.skins.map((s) => s.skinId);
     const skins = await this.resolveSkins(skinIds);
 

@@ -23,12 +23,10 @@ export interface ReconstructCredentialProps {
   readonly updatedAt: Date;
 }
 
-export class Credential extends DomainModel {
-  private readonly props: CredentialProps;
-
+export interface Credential extends Readonly<CredentialProps> {}
+export class Credential extends DomainModel<CredentialProps> {
   private constructor(props: CredentialProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(input: CreateCredentialProps): Credential {
@@ -46,28 +44,6 @@ export class Credential extends DomainModel {
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
     });
-  }
-
-  // ─── Getters ──────────────────────────────────────────────
-
-  get id(): CredentialId | undefined {
-    return this.props.id;
-  }
-
-  get userId(): string {
-    return this.props.userId;
-  }
-
-  get passwordHash(): PasswordHash {
-    return this.props.passwordHash;
-  }
-
-  get createdAt(): Date | undefined {
-    return this.props.createdAt;
-  }
-
-  get updatedAt(): Date | undefined {
-    return this.props.updatedAt;
   }
 
   // ─── Serialización ────────────────────────────────────────

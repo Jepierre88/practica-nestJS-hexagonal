@@ -15,17 +15,17 @@ export interface SkinProps {
   readonly updatedAt?: Date;
 }
 
-export interface CreateSkinProps extends Omit<SkinProps, 'id' | 'createdAt' | 'updatedAt'> {
-}
+export interface CreateSkinProps extends Omit<
+  SkinProps,
+  'id' | 'createdAt' | 'updatedAt'
+> {}
 
 export interface ReconstructSkinProps extends SkinProps {}
 
-export class Skin extends DomainModel {
-  private readonly props: SkinProps;
-
+export interface Skin extends Readonly<SkinProps> {}
+export class Skin extends DomainModel<SkinProps> {
   private constructor(props: SkinProps) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(props: CreateSkinProps): Skin {
@@ -34,30 +34,6 @@ export class Skin extends DomainModel {
 
   static reconstruct(props: ReconstructSkinProps): Skin {
     return new Skin(props);
-  }
-
-  get id(): string | undefined {
-    return this.props.id;
-  }
-
-  get name(): string {
-    return this.props.name;
-  }
-
-  get price(): number {
-    return this.props.price;
-  }
-
-  get skinFloat(): number {
-    return this.props.skinFloat;
-  }
-  
-  get weapon(): Weapon {
-    return this.props.weapon;
-  }
-
-  get collection(): Collection {
-    return this.props.collection;
   }
 
   toPrimitives() {

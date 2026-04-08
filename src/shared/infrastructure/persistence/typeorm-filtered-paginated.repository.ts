@@ -46,7 +46,7 @@ import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-ma
  */
 export abstract class TypeOrmFilteredPaginatedRepository<
   OrmEntity extends ObjectLiteral,
-  Domain extends DomainModel,
+  Domain extends DomainModel<any>,
 > implements FilteredPaginatedRepositoryPort {
   /** Repositorio TypeORM inyectado en la clase hija */
   protected abstract readonly ormRepository: Repository<OrmEntity>;

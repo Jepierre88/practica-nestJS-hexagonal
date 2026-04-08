@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { CreateCollectionUseCase } from '@cs2/collection/application/ports/in/create-collection.port';
 import { FindCollectionsUseCase } from '@cs2/collection/application/ports/in/find-collections.port';
@@ -27,8 +37,10 @@ export class CollectionController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Crear colección' })
   @ApiResponse({ status: 201, type: CollectionResponseDto })
-  async create(@Body() dto: CreateCollectionDto): Promise<CollectionResponseDto> {
-    const entity = await this.createCollectionUseCase.execute(CreateCollectionCommand.create({ ...dto }));
+  async create(
+    @Body() dto: CreateCollectionDto,
+  ): Promise<CollectionResponseDto> {
+    const entity = await this.createCollectionUseCase.execute({ ...dto });
     return this.dtoMapper.toResponse(entity);
   }
 
@@ -53,8 +65,14 @@ export class CollectionController {
   @ApiOperation({ summary: 'Actualizar colección' })
   @ApiParam({ name: 'id', type: String })
   @ApiResponse({ status: 200, type: CollectionResponseDto })
-  async update(@Param() params: UuidParam, @Body() dto: UpdateCollectionDto): Promise<CollectionResponseDto> {
-    const entity = await this.updateCollectionUseCase.execute(UpdateCollectionCommand.create({ id: params.id, ...dto }));
+  async update(
+    @Param() params: UuidParam,
+    @Body() dto: UpdateCollectionDto,
+  ): Promise<CollectionResponseDto> {
+    const entity = await this.updateCollectionUseCase.execute({
+      id: params.id,
+      ...dto,
+    });
     return this.dtoMapper.toResponse(entity);
   }
 

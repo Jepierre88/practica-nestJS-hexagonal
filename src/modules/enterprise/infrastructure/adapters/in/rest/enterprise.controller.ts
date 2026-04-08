@@ -45,7 +45,7 @@ export class EnterpriseController {
   })
   @ResponseMessage('Subscription assigned successfully')
   async assignSubscription(@Body() dto: AssignSubscriptionDto): Promise<void> {
-    const command = AssignSubscriptionCommand.create(dto);
+    const command: AssignSubscriptionCommand = dto;
     await this.assignSubscriptionUseCase.execute(command);
   }
 
@@ -60,10 +60,10 @@ export class EnterpriseController {
   @ApiResponse({ status: 400, description: 'Plan inválido' })
   @ResponseMessage('Subscription changed successfully')
   async changeSubscription(@Body() dto: ChangeSubscriptionDto): Promise<void> {
-    const command = ChangeSubscriptionCommand.create({
+    const command: ChangeSubscriptionCommand = {
       userId: dto.userId,
       newPlan: dto.newPlan,
-    });
+    };
     await this.changeSubscriptionUseCase.execute(command);
   }
 }
