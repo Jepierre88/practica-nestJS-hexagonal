@@ -36,23 +36,23 @@ export class UserOrmEntity {
   avatarUrl!: string | null;
 
   @Column({
-    type!: 'enum',
-    enum!: UserStatus,
-    default!: UserStatus.ACTIVE,
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.ACTIVE,
   })
   status!: UserStatus;
 
   @Column({
-    name!: 'email_verified_at',
-    type!: 'timestamp with time zone',
-    nullable!: true,
+    name: 'email_verified_at',
+    type: 'timestamp with time zone',
+    nullable: true,
   })
   emailVerifiedAt!: Date | null;
 
   @Column({
-    name!: 'last_login_at',
-    type!: 'timestamp with time zone',
-    nullable!: true,
+    name: 'last_login_at',
+    type: 'timestamp with time zone',
+    nullable: true,
   })
   lastLoginAt!: Date | null;
 
@@ -63,9 +63,9 @@ export class UserOrmEntity {
   updatedAt!: Date;
 
   @DeleteDateColumn({
-    name!: 'deleted_at',
-    type!: 'timestamp with time zone',
-    nullable!: true,
+    name: 'deleted_at',
+    type: 'timestamp with time zone',
+    nullable: true,
   })
   deletedAt!: Date | null;
 

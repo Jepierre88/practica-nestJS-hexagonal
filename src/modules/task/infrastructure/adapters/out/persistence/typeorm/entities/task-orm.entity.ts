@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity('tasks', {
-  schema!: DbSchemas.Task,
+  schema: DbSchemas.Task,
 })
 export class TaskOrmEntity {
   @PrimaryGeneratedColumn('uuid')

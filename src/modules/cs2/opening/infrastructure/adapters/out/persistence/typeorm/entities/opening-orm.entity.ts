@@ -18,8 +18,8 @@ export class OpeningOrmEntity {
   name!: string;
 
   @OneToMany(() => OpeningCaseOrmEntity, (oc) => oc.opening, {
-    cascade!: true,
-    eager!: true,
+    cascade: true,
+    eager: true,
   })
   openingCases!: OpeningCaseOrmEntity[];
 

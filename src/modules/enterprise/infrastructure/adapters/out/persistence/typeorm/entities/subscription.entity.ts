@@ -9,17 +9,17 @@ import {
 } from 'typeorm';
 
 @Entity('subscriptions', {
-  schema!: DbSchemas.Enterprise,
+  schema: DbSchemas.Enterprise,
 })
 export class SubscriptionOrmEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({
-    name!: 'subscription_type',
-    type!: 'varchar',
-    length!: 50,
-    enum!: ESubscriptionType,
+    name: 'subscription_type',
+    type: 'varchar',
+    length: 50,
+    enum: ESubscriptionType,
   })
   subscriptionType!: ESubscriptionType;
 

@@ -21,8 +21,8 @@ export class CaseOrmEntity {
   price!: number;
 
   @OneToMany(() => CaseSkinOrmEntity, (cs) => cs.case, {
-    cascade!: true,
-    eager!: true,
+    cascade: true,
+    eager: true,
   })
   caseSkins!: CaseSkinOrmEntity[];
 
