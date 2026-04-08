@@ -13,28 +13,28 @@ import { SkinOrmEntity } from '@cs2/skin/infrastructure/adapters/out/persistence
 @Entity('opening_cases', { schema: DbSchemas.Cs2 })
 export class OpeningCaseOrmEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ name: 'opening_id', type: 'uuid' })
-  openingId: string;
+  openingId!: string;
 
   @Column({ name: 'case_id', type: 'uuid' })
-  caseId: string;
+  caseId!: string;
 
   @Column({ name: 'result_skin_id', type: 'uuid' })
-  resultSkinId: string;
+  resultSkinId!: string;
 
   @ManyToOne(() => OpeningOrmEntity, (o) => o.openingCases, {
-    onDelete: 'CASCADE',
+    onDelete!: 'CASCADE',
   })
   @JoinColumn({ name: 'opening_id' })
-  opening: OpeningOrmEntity;
+  opening!: OpeningOrmEntity;
 
   @ManyToOne(() => CaseOrmEntity, { eager: true })
   @JoinColumn({ name: 'case_id' })
-  case: CaseOrmEntity;
+  case!: CaseOrmEntity;
 
   @ManyToOne(() => SkinOrmEntity, { eager: true })
   @JoinColumn({ name: 'result_skin_id' })
-  resultSkin: SkinOrmEntity;
+  resultSkin!: SkinOrmEntity;
 }

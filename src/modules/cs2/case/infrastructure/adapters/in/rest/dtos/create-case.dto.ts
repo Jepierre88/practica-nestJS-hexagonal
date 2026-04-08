@@ -19,7 +19,7 @@ export class CaseSkinWithRateDto {
   @ApiProperty({ example: 'uuid', description: 'ID del skin' })
   @IsNotEmpty()
   @IsUUID()
-  readonly skinId: string;
+  readonly skinId!: string;
 
   @ApiProperty({
     example: 25.5,
@@ -31,7 +31,7 @@ export class CaseSkinWithRateDto {
   @IsNumber()
   @Min(0)
   @Max(100)
-  readonly dropRate: number;
+  readonly dropRate!: number;
 }
 
 export class CreateCaseDto {
@@ -40,7 +40,7 @@ export class CreateCaseDto {
   @IsString()
   @MinLength(2)
   @MaxLength(150)
-  readonly name: string;
+  readonly name!: string;
 
   @ApiPropertyOptional({
     example: 2.5,

@@ -26,8 +26,8 @@ export class AccountOrmEntity {
    * Provider de autenticación
    */
   @Column({
-    type: 'enum',
-    enum: AuthProvider,
+    type!: 'enum',
+    enum!: AuthProvider,
   })
   provider!: AuthProvider;
 
@@ -68,9 +68,9 @@ export class AccountOrmEntity {
    * Cuándo se vinculó la cuenta
    */
   @Column({
-    name: 'linked_at',
-    type: 'timestamp with time zone',
-    default: () => 'CURRENT_TIMESTAMP',
+    name!: 'linked_at',
+    type!: 'timestamp with time zone',
+    default!: () => 'CURRENT_TIMESTAMP',
   })
   linkedAt!: Date;
 
@@ -78,9 +78,9 @@ export class AccountOrmEntity {
    * Último login con este provider
    */
   @Column({
-    name: 'last_login_at',
-    type: 'timestamp with time zone',
-    nullable: true,
+    name!: 'last_login_at',
+    type!: 'timestamp with time zone',
+    nullable!: true,
   })
   lastLoginAt!: Date | null;
 

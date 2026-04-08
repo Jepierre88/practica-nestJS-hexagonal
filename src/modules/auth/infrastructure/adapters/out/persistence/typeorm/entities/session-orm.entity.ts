@@ -48,9 +48,9 @@ export class SessionOrmEntity {
    * Si la sesión fue revocada
    */
   @Column({
-    name: 'revoked_at',
-    type: 'timestamp with time zone',
-    nullable: true,
+    name!: 'revoked_at',
+    type!: 'timestamp with time zone',
+    nullable!: true,
   })
   revokedAt!: Date | null;
 
@@ -59,10 +59,10 @@ export class SessionOrmEntity {
    * guarda el siguiente token que reemplazó este
    */
   @Column({
-    name: 'replaced_by_token',
-    type: 'varchar',
-    length: 255,
-    nullable: true,
+    name!: 'replaced_by_token',
+    type!: 'varchar',
+    length!: 255,
+    nullable!: true,
   })
   replacedByToken!: string | null;
 

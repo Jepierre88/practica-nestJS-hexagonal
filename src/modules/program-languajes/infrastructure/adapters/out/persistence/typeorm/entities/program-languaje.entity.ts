@@ -13,10 +13,10 @@ import { DifficultyLevel } from '@program-languajes/domain/value-objects/difficu
 @Unique('UQ_PROGRAM_LANGUAJE_NAME', ['name'])
 export class ProgramLanguajeEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
   description?: string;
@@ -25,8 +25,8 @@ export class ProgramLanguajeEntity {
   difficulty?: DifficultyLevel;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

@@ -5,7 +5,7 @@ export class ListPaginatedQueryDto {
   @ApiProperty({ default: 1, minimum: 1, description: 'Número de página' })
   @IsInt()
   @Min(1)
-  readonly page: number = 1;
+  readonly page!: number = 1;
 
   @ApiProperty({
     default: 10,
@@ -16,7 +16,7 @@ export class ListPaginatedQueryDto {
   @IsInt()
   @Min(1)
   @Max(100)
-  readonly limit: number = 10;
+  readonly limit!: number = 10;
 
   @ApiPropertyOptional({
     description: 'Campo por el cual ordenar',

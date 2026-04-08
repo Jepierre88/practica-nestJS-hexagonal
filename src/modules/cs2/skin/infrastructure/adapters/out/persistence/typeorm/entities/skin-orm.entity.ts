@@ -14,34 +14,34 @@ import { CollectionOrmEntity } from '@cs2/collection/infrastructure/adapters/out
 @Entity('skins', { schema: DbSchemas.Cs2 })
 export class SkinOrmEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', length: 150 })
-  name: string;
+  name!: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
-  price: number;
+  price!: number;
 
   @Column({ name: 'skin_float', type: 'decimal', precision: 10, scale: 8 })
-  skinFloat: number;
+  skinFloat!: number;
 
   @Column({ name: 'weapon_id', type: 'uuid' })
-  weaponId: string;
+  weaponId!: string;
 
   @ManyToOne(() => WeaponOrmEntity, { eager: true })
   @JoinColumn({ name: 'weapon_id' })
-  weapon: WeaponOrmEntity;
+  weapon!: WeaponOrmEntity;
 
   @Column({ name: 'collection_id', type: 'uuid' })
-  collectionId: string;
+  collectionId!: string;
 
   @ManyToOne(() => CollectionOrmEntity, { eager: true })
   @JoinColumn({ name: 'collection_id' })
-  collection: CollectionOrmEntity;
+  collection!: CollectionOrmEntity;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp with time zone' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

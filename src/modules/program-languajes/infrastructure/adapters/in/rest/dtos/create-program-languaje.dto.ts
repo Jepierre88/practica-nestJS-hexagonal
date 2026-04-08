@@ -15,7 +15,7 @@ export class CreateProgramLanguajeDto {
   @IsString()
   @MaxLength(100)
   @MinLength(2)
-  readonly name: string;
+  readonly name!: string;
 
   @ApiPropertyOptional({
     example: 'A typed superset of JavaScript',
@@ -24,7 +24,7 @@ export class CreateProgramLanguajeDto {
   @IsString()
   @IsOptional()
   @MaxLength(255)
-  readonly description: string;
+  readonly description!: string;
 
   @ApiPropertyOptional({
     enum: [1, 2, 3],

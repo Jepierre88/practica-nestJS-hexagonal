@@ -10,14 +10,14 @@ import {
 @Entity('weapons', { schema: DbSchemas.Cs2 })
 export class WeaponOrmEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', length: 150 })
-  name: string;
+  name!: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp with time zone' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

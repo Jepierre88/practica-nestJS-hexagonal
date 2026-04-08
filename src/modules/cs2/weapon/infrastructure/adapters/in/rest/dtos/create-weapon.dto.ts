@@ -7,5 +7,5 @@ export class CreateWeaponDto {
   @IsString()
   @MinLength(2)
   @MaxLength(150)
-  readonly name: string;
+  readonly name!: string;
 }

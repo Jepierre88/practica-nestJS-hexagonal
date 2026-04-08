@@ -2,36 +2,36 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class OpeningCaseResponseDto {
   @ApiProperty({ example: 'uuid' })
-  readonly caseId: string;
+  readonly caseId!: string;
 
   @ApiProperty({ example: 'Kilowatt Case' })
-  readonly caseName: string;
+  readonly caseName!: string;
 
   @ApiProperty({ example: 2.5 })
-  readonly casePrice: number;
+  readonly casePrice!: number;
 
   @ApiProperty({ example: 'uuid' })
-  readonly resultSkinId: string;
+  readonly resultSkinId!: string;
 
   @ApiProperty({ example: 'Asiimov' })
-  readonly resultSkinName: string;
+  readonly resultSkinName!: string;
 }
 
 export class OpeningResponseDto {
   @ApiProperty({ example: 'uuid' })
-  readonly id: string;
+  readonly id!: string;
 
   @ApiProperty({ example: 'Kilowatt Case Opening' })
-  readonly name: string;
+  readonly name!: string;
 
   @ApiProperty({ type: [OpeningCaseResponseDto] })
-  readonly cases: OpeningCaseResponseDto[];
+  readonly cases!: OpeningCaseResponseDto[];
 
   @ApiProperty()
-  readonly createdAt: Date;
+  readonly createdAt!: Date;
 
   @ApiProperty()
-  readonly updatedAt: Date;
+  readonly updatedAt!: Date;
 
   constructor(props: OpeningResponseDto) {
     this.id = props.id;

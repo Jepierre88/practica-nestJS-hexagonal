@@ -3,10 +3,10 @@ import { DifficultyLevel } from '@program-languajes/domain/value-objects/difficu
 
 export class ProgramLanguajeResponseDto {
   @ApiProperty({ example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' })
-  readonly id: string;
+  readonly id!: string;
 
   @ApiProperty({ example: 'TypeScript' })
-  readonly name: string;
+  readonly name!: string;
 
   @ApiPropertyOptional({ example: 'A typed superset of JavaScript' })
   readonly description?: string;
@@ -19,8 +19,8 @@ export class ProgramLanguajeResponseDto {
   readonly difficulty?: DifficultyLevel;
 
   @ApiProperty({ example: '2026-01-15T10:30:00.000Z' })
-  readonly createdAt: string;
+  readonly createdAt!: string;
 
   @ApiProperty({ example: '2026-01-15T10:30:00.000Z' })
-  readonly updatedAt: string;
+  readonly updatedAt!: string;
 }

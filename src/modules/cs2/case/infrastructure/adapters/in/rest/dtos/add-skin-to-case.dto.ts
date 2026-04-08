@@ -5,5 +5,5 @@ export class AddSkinToCaseDto {
   @ApiProperty({ example: 'uuid', description: 'ID del skin a agregar' })
   @IsNotEmpty()
   @IsUUID()
-  readonly skinId: string;
+  readonly skinId!: string;
 }
