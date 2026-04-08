@@ -5,7 +5,7 @@ import {
   TaskStatus,
   TaskStatusEnum,
 } from '@task/domain/value-objects/task-status.vo';
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface TaskProps {
   readonly id?: TaskId;
@@ -30,7 +30,7 @@ export interface ReconstructTaskProps {
   readonly updatedAt: Date;
 }
 
-export interface Task extends Readonly<TaskProps> {}
+export interface Task extends DomainProps<TaskProps> {}
 export class Task extends DomainModel<TaskProps> {
   private constructor(props: TaskProps) {
     super(props);

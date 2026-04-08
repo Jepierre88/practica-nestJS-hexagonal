@@ -18,7 +18,7 @@ export class CaseResponseDto {
   @ApiProperty({ example: 'Kilowatt Case' })
   readonly name: string;
 
-  @ApiProperty({ example: 2.50 })
+  @ApiProperty({ example: 2.5 })
   readonly price: number;
 
   @ApiProperty({ type: [CaseSkinResponseDto] })

@@ -7,7 +7,7 @@ export class OpeningCaseResponseDto {
   @ApiProperty({ example: 'Kilowatt Case' })
   readonly caseName: string;
 
-  @ApiProperty({ example: 2.50 })
+  @ApiProperty({ example: 2.5 })
   readonly casePrice: number;
 
   @ApiProperty({ example: 'uuid' })

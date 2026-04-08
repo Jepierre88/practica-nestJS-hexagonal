@@ -1,6 +1,6 @@
 import { Collection } from '@cs2/collection/domain/models/collection.model';
 import { Weapon } from '@cs2/weapon/domain/models/weapon.model';
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface SkinProps {
   readonly id?: string;
@@ -22,7 +22,7 @@ export interface CreateSkinProps extends Omit<
 
 export interface ReconstructSkinProps extends SkinProps {}
 
-export interface Skin extends Readonly<SkinProps> {}
+export interface Skin extends DomainProps<SkinProps> {}
 export class Skin extends DomainModel<SkinProps> {
   private constructor(props: SkinProps) {
     super(props);

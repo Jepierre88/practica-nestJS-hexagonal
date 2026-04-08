@@ -33,15 +33,22 @@ export class CaseOpenResultDto {
   @ApiProperty({ example: 'Kilowatt Case' })
   readonly caseName: string;
 
-  @ApiProperty({ example: 2.50 })
+  @ApiProperty({ example: 2.5 })
   readonly casePrice: number;
 
-  @ApiProperty({ example: 5, description: 'Índice del skin ganador en el array de skins (para animación del spinner)' })
+  @ApiProperty({
+    example: 5,
+    description:
+      'Índice del skin ganador en el array de skins (para animación del spinner)',
+  })
   readonly winnerIndex: number;
 
   @ApiProperty({ type: CaseOpenSkinDto, description: 'Skin ganado' })
   readonly winner: CaseOpenSkinDto;
 
-  @ApiProperty({ type: [CaseOpenSkinDto], description: 'Todos los skins de la caja (para renderizar el carrusel)' })
+  @ApiProperty({
+    type: [CaseOpenSkinDto],
+    description: 'Todos los skins de la caja (para renderizar el carrusel)',
+  })
   readonly skins: CaseOpenSkinDto[];
 }

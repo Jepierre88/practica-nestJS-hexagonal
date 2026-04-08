@@ -16,8 +16,6 @@ import { UpdateCollectionUseCase } from '@cs2/collection/application/ports/in/up
 import { DeleteCollectionUseCase } from '@cs2/collection/application/ports/in/delete-collection.port';
 import { CreateCollectionDto } from './dtos/create-collection.dto';
 import { UpdateCollectionDto } from './dtos/update-collection.dto';
-import { CreateCollectionCommand } from '@cs2/collection/application/commands/create-collection.command';
-import { UpdateCollectionCommand } from '@cs2/collection/application/commands/update-collection.command';
 import { CollectionResponseDto } from './dtos/collection-response.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { CollectionDtoMapper } from './mappers/collection-dto.mapper';

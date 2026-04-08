@@ -21,7 +21,12 @@ export class CaseSkinWithRateDto {
   @IsUUID()
   readonly skinId: string;
 
-  @ApiProperty({ example: 25.5, minimum: 0, maximum: 100, description: 'Porcentaje de drop rate' })
+  @ApiProperty({
+    example: 25.5,
+    minimum: 0,
+    maximum: 100,
+    description: 'Porcentaje de drop rate',
+  })
   @IsNotEmpty()
   @IsNumber()
   @Min(0)
@@ -37,25 +42,37 @@ export class CreateCaseDto {
   @MaxLength(150)
   readonly name: string;
 
-  @ApiPropertyOptional({ example: 2.50, minimum: 0, description: 'Modo "price": precio de la caja. Drop rates se auto-calculan.' })
+  @ApiPropertyOptional({
+    example: 2.5,
+    minimum: 0,
+    description:
+      'Modo "price": precio de la caja. Drop rates se auto-calculan.',
+  })
   @IsOptional()
   @IsNumber()
   @Min(0)
-  @ValidateIf((o) => !o.skins || o.price !== undefined)
+  @ValidateIf((o: CreateCaseDto) => !o.skins || o.price !== undefined)
   readonly price?: number;
 
-  @ApiPropertyOptional({ type: [String], example: ['uuid-1', 'uuid-2'], description: 'Modo "price": IDs de los skins.' })
+  @ApiPropertyOptional({
+    type: [String],
+    example: ['uuid-1', 'uuid-2'],
+    description: 'Modo "price": IDs de los skins.',
+  })
   @IsOptional()
   @IsArray()
   @IsUUID('4', { each: true })
-  @ValidateIf((o) => !o.skins)
+  @ValidateIf((o: CreateCaseDto) => !o.skins)
   readonly skinIds?: string[];
 
-  @ApiPropertyOptional({ type: [CaseSkinWithRateDto], description: 'Modo "rates": skins con drop rates. Precio se auto-calcula.' })
+  @ApiPropertyOptional({
+    type: [CaseSkinWithRateDto],
+    description: 'Modo "rates": skins con drop rates. Precio se auto-calcula.',
+  })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CaseSkinWithRateDto)
-  @ValidateIf((o) => !o.price && !o.skinIds)
+  @ValidateIf((o: CreateCaseDto) => !o.price && !o.skinIds)
   readonly skins?: CaseSkinWithRateDto[];
 }

@@ -5,7 +5,9 @@ import { CollectionNotFoundException } from '../../domain/exceptions/collection.
 
 @Injectable()
 export class DeleteCollectionService implements DeleteCollectionUseCase {
-  constructor(private readonly collectionRepository: CollectionRepositoryPort) {}
+  constructor(
+    private readonly collectionRepository: CollectionRepositoryPort,
+  ) {}
 
   async execute(id: string): Promise<void> {
     const existing = await this.collectionRepository.findById(id);

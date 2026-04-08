@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsNumber, IsString, IsUUID, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateSkinDto {
@@ -15,7 +23,11 @@ export class CreateSkinDto {
   @Min(0)
   readonly price: number;
 
-  @ApiProperty({ example: 0.15, minimum: 0, description: 'Float value (desgaste) del skin' })
+  @ApiProperty({
+    example: 0.15,
+    minimum: 0,
+    description: 'Float value (desgaste) del skin',
+  })
   @IsNotEmpty()
   @IsNumber()
   @Min(0)

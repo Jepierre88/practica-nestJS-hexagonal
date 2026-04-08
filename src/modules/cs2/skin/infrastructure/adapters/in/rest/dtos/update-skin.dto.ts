@@ -1,4 +1,12 @@
-import { IsNumber, IsOptional, IsString, IsUUID, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateSkinDto {
@@ -9,7 +17,7 @@ export class UpdateSkinDto {
   @MaxLength(150)
   readonly name?: string;
 
-  @ApiPropertyOptional({ example: 850.00 })
+  @ApiPropertyOptional({ example: 850.0 })
   @IsOptional()
   @IsNumber()
   @Min(0)

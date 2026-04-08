@@ -1,7 +1,7 @@
 import { UserId } from '@users/domain/value-objects/user-id.vo';
 import { UserName } from '@users/domain/value-objects/user-name.vo';
 import { UserEmail } from '@users/domain/value-objects/user-email.vo';
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 import { Subscription } from '@enterprise/domain/model/subscription.model';
 
 export interface UserProps {
@@ -31,7 +31,7 @@ export interface ReconstructUserProps {
   readonly updatedAt: Date;
 }
 
-export interface User extends Readonly<UserProps> {}
+export interface User extends DomainProps<UserProps> {}
 export class User extends DomainModel<UserProps> {
   private constructor(props: UserProps) {
     super(props);

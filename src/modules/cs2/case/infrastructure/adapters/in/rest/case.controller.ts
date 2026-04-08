@@ -10,7 +10,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { CreateCaseUseCase } from '@cs2/case/application/ports/in/create-case.port';
+import { CreateCaseWithPriceUseCase } from '@cs2/case/application/ports/in/create-case-with-price.port';
+import { CreateCaseWithRatesUseCase } from '@cs2/case/application/ports/in/create-case-with-rates.port';
 import { FindCasesUseCase } from '@cs2/case/application/ports/in/find-cases.port';
 import { UpdateCaseUseCase } from '@cs2/case/application/ports/in/update-case.port';
 import { DeleteCaseUseCase } from '@cs2/case/application/ports/in/delete-case.port';
@@ -19,10 +20,6 @@ import { OpenCaseUseCase } from '@cs2/case/application/ports/in/open-case.port';
 import { CreateCaseDto } from './dtos/create-case.dto';
 import { UpdateCaseDto } from './dtos/update-case.dto';
 import { AddSkinToCaseDto } from './dtos/add-skin-to-case.dto';
-import { CreateCaseCommand } from '@cs2/case/application/commands/create-case.command';
-import { UpdateCaseCommand } from '@cs2/case/application/commands/update-case.command';
-import { AddSkinToCaseCommand } from '@cs2/case/application/commands/add-skin-to-case.command';
-import { RemoveSkinFromCaseCommand } from '@cs2/case/application/commands/remove-skin-from-case.command';
 import { CaseResponseDto } from './dtos/case-response.dto';
 import {
   CaseOpenResultDto,
@@ -34,15 +31,15 @@ import { CaseDtoMapper } from './mappers/case-dto.mapper';
 @ApiTags('CS2 - Cases')
 @Controller('cs2/cases')
 export class CaseController {
-  private readonly dtoMapper = new CaseDtoMapper();
-
   constructor(
-    private readonly createCaseUseCase: CreateCaseUseCase,
+    private readonly createCaseWithPrice: CreateCaseWithPriceUseCase,
+    private readonly createCaseWithRates: CreateCaseWithRatesUseCase,
     private readonly findCasesUseCase: FindCasesUseCase,
     private readonly updateCaseUseCase: UpdateCaseUseCase,
     private readonly deleteCaseUseCase: DeleteCaseUseCase,
     private readonly manageCaseSkinsUseCase: ManageCaseSkinsUseCase,
     private readonly openCaseUseCase: OpenCaseUseCase,
+    private readonly caseDtoMapper: CaseDtoMapper,
   ) {}
 
   @Post()
@@ -54,25 +51,19 @@ export class CaseController {
   })
   @ApiResponse({ status: 201, type: CaseResponseDto })
   async create(@Body() dto: CreateCaseDto): Promise<CaseResponseDto> {
-    let command: CreateCaseCommand;
+    const entity =
+      dto.skins && dto.skins.length > 0
+        ? await this.createCaseWithRates.execute({
+            name: dto.name,
+            skins: dto.skins,
+          })
+        : await this.createCaseWithPrice.execute({
+            name: dto.name,
+            price: dto.price ?? 0,
+            skinIds: dto.skinIds ?? [],
+          });
 
-    if (dto.skins && dto.skins.length > 0) {
-      command = {
-        mode: 'rates',
-        name: dto.name,
-        skins: dto.skins,
-      };
-    } else {
-      command = {
-        mode: 'price',
-        name: dto.name,
-        price: dto.price ?? 0,
-        skinIds: dto.skinIds ?? [],
-      };
-    }
-
-    const entity = await this.createCaseUseCase.execute(command);
-    return this.dtoMapper.toResponse(entity);
+    return this.caseDtoMapper.toResponse(entity);
   }
 
   @Get()
@@ -80,7 +71,7 @@ export class CaseController {
   @ApiResponse({ status: 200, type: [CaseResponseDto] })
   async findAll(): Promise<CaseResponseDto[]> {
     const entities = await this.findCasesUseCase.findAll();
-    return this.dtoMapper.toResponseList(entities);
+    return this.caseDtoMapper.toResponseList(entities);
   }
 
   @Get(':id')
@@ -89,7 +80,7 @@ export class CaseController {
   @ApiResponse({ status: 200, type: CaseResponseDto })
   async findById(@Param() params: UuidParam): Promise<CaseResponseDto> {
     const entity = await this.findCasesUseCase.findById(params.id);
-    return this.dtoMapper.toResponse(entity);
+    return this.caseDtoMapper.toResponse(entity);
   }
 
   @Put(':id')
@@ -104,7 +95,7 @@ export class CaseController {
       id: params.id,
       ...dto,
     });
-    return this.dtoMapper.toResponse(entity);
+    return this.caseDtoMapper.toResponse(entity);
   }
 
   @Delete(':id')
@@ -132,7 +123,7 @@ export class CaseController {
       caseId: params.id,
       skinId: dto.skinId,
     });
-    return this.dtoMapper.toResponse(entity);
+    return this.caseDtoMapper.toResponse(entity);
   }
 
   @Delete(':id/skins/:skinId')
@@ -149,7 +140,7 @@ export class CaseController {
       caseId,
       skinId,
     });
-    return this.dtoMapper.toResponse(entity);
+    return this.caseDtoMapper.toResponse(entity);
   }
 
   @Post(':id/open')

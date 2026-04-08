@@ -18,10 +18,6 @@ import { ManageOpeningCasesUseCase } from '@cs2/opening/application/ports/in/man
 import { CreateOpeningDto } from './dtos/create-opening.dto';
 import { UpdateOpeningDto } from './dtos/update-opening.dto';
 import { AddCaseToOpeningDto } from './dtos/add-case-to-opening.dto';
-import { CreateOpeningCommand } from '@cs2/opening/application/commands/create-opening.command';
-import { UpdateOpeningCommand } from '@cs2/opening/application/commands/update-opening.command';
-import { AddCaseToOpeningCommand } from '@cs2/opening/application/commands/add-case-to-opening.command';
-import { RemoveCaseFromOpeningCommand } from '@cs2/opening/application/commands/remove-case-from-opening.command';
 import { OpeningResponseDto } from './dtos/opening-response.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { OpeningDtoMapper } from './mappers/opening-dto.mapper';

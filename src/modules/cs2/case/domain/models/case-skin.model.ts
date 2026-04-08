@@ -1,12 +1,12 @@
 import { Skin } from '@cs2/skin/domain/models/skin.model';
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface CaseSkinProps {
   readonly skin: Skin;
   readonly dropRate: number;
 }
 
-export interface CaseSkin extends Readonly<CaseSkinProps> {}
+export interface CaseSkin extends DomainProps<CaseSkinProps> {}
 export class CaseSkin extends DomainModel<CaseSkinProps> {
   private constructor(props: CaseSkinProps) {
     super(props);

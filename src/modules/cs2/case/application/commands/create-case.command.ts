@@ -3,19 +3,13 @@ export interface CaseSkinWithRate {
   readonly dropRate: number;
 }
 
-export interface CreateCasePriceModeProps {
-  readonly mode: 'price';
+export interface CreateCaseWithPriceCommand {
   readonly name: string;
   readonly price: number;
   readonly skinIds: string[];
 }
 
-export interface CreateCaseRatesModeProps {
-  readonly mode: 'rates';
+export interface CreateCaseWithRatesCommand {
   readonly name: string;
   readonly skins: CaseSkinWithRate[];
 }
-
-export type CreateCaseCommand =
-  | CreateCasePriceModeProps
-  | CreateCaseRatesModeProps;

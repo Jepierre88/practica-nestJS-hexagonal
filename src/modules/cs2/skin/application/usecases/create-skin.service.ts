@@ -20,7 +20,9 @@ export class CreateSkinService implements CreateSkinUseCase {
       throw new Error(`Weapon "${command.weaponId}" not found.`);
     }
 
-    const collection = await this.collectionRepository.findById(command.collectionId);
+    const collection = await this.collectionRepository.findById(
+      command.collectionId,
+    );
     if (!collection) {
       throw new Error(`Collection "${command.collectionId}" not found.`);
     }

@@ -20,7 +20,10 @@ export class CaseOrmEntity {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
-  @OneToMany(() => CaseSkinOrmEntity, (cs) => cs.case, { cascade: true, eager: true })
+  @OneToMany(() => CaseSkinOrmEntity, (cs) => cs.case, {
+    cascade: true,
+    eager: true,
+  })
   caseSkins: CaseSkinOrmEntity[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })

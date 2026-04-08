@@ -1,4 +1,4 @@
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 import { OpeningCase } from './opening-case.model';
 
 export interface OpeningProps {
@@ -16,7 +16,7 @@ export interface CreateOpeningProps {
 
 export interface ReconstructOpeningProps extends OpeningProps {}
 
-export interface Opening extends Readonly<OpeningProps> {}
+export interface Opening extends DomainProps<OpeningProps> {}
 export class Opening extends DomainModel<OpeningProps> {
   private constructor(props: OpeningProps) {
     super(props);

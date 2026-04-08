@@ -62,7 +62,7 @@ import { WeaponOrmEntity } from '@cs2/weapon/infrastructure/adapters/out/persist
     UsersModule,
     ProgramLanguajesModule,
     EnterpriseModule,
-    Cs2Module
+    Cs2Module,
   ],
   controllers: [],
   providers: [

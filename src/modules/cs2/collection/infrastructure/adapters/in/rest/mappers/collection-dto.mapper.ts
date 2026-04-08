@@ -2,7 +2,10 @@ import { Collection } from '@cs2/collection/domain/models/collection.model';
 import { CollectionResponseDto } from '../dtos/collection-response.dto';
 import { DtoMapper } from '@shared/infrastructure/mappers/dto-mapper.interface';
 
-export class CollectionDtoMapper extends DtoMapper<Collection, CollectionResponseDto> {
+export class CollectionDtoMapper extends DtoMapper<
+  Collection,
+  CollectionResponseDto
+> {
   toResponse(entity: Collection): CollectionResponseDto {
     const primitives = entity.toPrimitives();
     return new CollectionResponseDto({

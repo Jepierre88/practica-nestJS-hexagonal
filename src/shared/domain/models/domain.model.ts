@@ -2,14 +2,20 @@
  * Clase base para modelos de dominio.
  *
  * Genera getters de solo lectura automáticamente a partir de las `props`.
- * Cada subclase concreta debe agregar declaration merging para que
- * TypeScript conozca los getters:
+ * Cada subclase concreta DEBE agregar una línea de declaration merging
+ * para que TypeScript conozca los getters en compilación:
  *
  * ```ts
- * export interface User extends Readonly<UserProps> {}
+ * export interface User extends DomainProps<UserProps> {}
  * export class User extends DomainModel<UserProps> { … }
  * ```
+ *
+ * Esto es una limitación de TypeScript: `Readonly<T>` con genéricos
+ * no puede resolverse en la clase base, pero sí en cada subclase
+ * donde T es concreto.
  */
+export type DomainProps<T> = Readonly<T>;
+
 export abstract class DomainModel<T extends Record<string, any>> {
   protected readonly props: T;
 

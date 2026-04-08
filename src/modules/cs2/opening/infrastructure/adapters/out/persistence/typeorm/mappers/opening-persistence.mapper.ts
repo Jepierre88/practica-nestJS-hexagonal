@@ -7,9 +7,13 @@ import { Weapon } from '@cs2/weapon/domain/models/weapon.model';
 import { Collection } from '@cs2/collection/domain/models/collection.model';
 import { OpeningOrmEntity } from '../entities/opening-orm.entity';
 import { OpeningCaseOrmEntity } from '../entities/opening-case-orm.entity';
+import { SkinOrmEntity } from '@cs2/skin/infrastructure/adapters/out/persistence/typeorm/entities/skin-orm.entity';
 import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 
-export class OpeningPersistenceMapper extends PersistenceMapper<Opening, OpeningOrmEntity> {
+export class OpeningPersistenceMapper extends PersistenceMapper<
+  Opening,
+  OpeningOrmEntity
+> {
   toOrm(domain: Opening): OpeningOrmEntity {
     const primitives = domain.toPrimitives();
     const orm = new OpeningOrmEntity();
@@ -57,7 +61,7 @@ export class OpeningPersistenceMapper extends PersistenceMapper<Opening, Opening
     });
   }
 
-  private reconstructSkin(skinOrm: any): Skin {
+  private reconstructSkin(skinOrm: SkinOrmEntity): Skin {
     return Skin.reconstruct({
       id: skinOrm.id,
       name: skinOrm.name,

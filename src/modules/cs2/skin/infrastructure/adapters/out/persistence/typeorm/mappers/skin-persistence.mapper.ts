@@ -4,7 +4,10 @@ import { Collection } from '@cs2/collection/domain/models/collection.model';
 import { SkinOrmEntity } from '../entities/skin-orm.entity';
 import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 
-export class SkinPersistenceMapper extends PersistenceMapper<Skin, SkinOrmEntity> {
+export class SkinPersistenceMapper extends PersistenceMapper<
+  Skin,
+  SkinOrmEntity
+> {
   toOrm(domain: Skin): SkinOrmEntity {
     const primitives = domain.toPrimitives();
     const orm = new SkinOrmEntity();

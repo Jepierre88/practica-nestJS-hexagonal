@@ -7,7 +7,10 @@ import { CaseOrmEntity } from '../entities/case-orm.entity';
 import { CaseSkinOrmEntity } from '../entities/case-skin-orm.entity';
 import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 
-export class CasePersistenceMapper extends PersistenceMapper<Case, CaseOrmEntity> {
+export class CasePersistenceMapper extends PersistenceMapper<
+  Case,
+  CaseOrmEntity
+> {
   toOrm(domain: Case): CaseOrmEntity {
     const primitives = domain.toPrimitives();
     const orm = new CaseOrmEntity();

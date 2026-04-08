@@ -17,7 +17,10 @@ export class OpeningOrmEntity {
   @Column({ type: 'varchar', length: 150 })
   name: string;
 
-  @OneToMany(() => OpeningCaseOrmEntity, (oc) => oc.opening, { cascade: true, eager: true })
+  @OneToMany(() => OpeningCaseOrmEntity, (oc) => oc.opening, {
+    cascade: true,
+    eager: true,
+  })
   openingCases: OpeningCaseOrmEntity[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })

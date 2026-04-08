@@ -23,7 +23,9 @@ export class OpenCaseService implements OpenCaseUseCase {
       throw new Error(`Case "${caseEntity.name}" has no skins to open.`);
     }
 
-    const { winnerSkin, winnerIndex } = CaseOpeningService.open(caseEntity.caseSkins);
+    const { winnerSkin, winnerIndex } = CaseOpeningService.open(
+      caseEntity.caseSkins,
+    );
 
     // Create an opening record with the result
     const opening = Opening.create({

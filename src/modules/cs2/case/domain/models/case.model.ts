@@ -1,5 +1,5 @@
 import { CaseSkin } from './case-skin.model';
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface CaseProps {
   readonly id?: string;
@@ -18,7 +18,7 @@ export interface CreateCaseProps {
 
 export interface ReconstructCaseProps extends CaseProps {}
 
-export interface Case extends Readonly<CaseProps> {}
+export interface Case extends DomainProps<CaseProps> {}
 export class Case extends DomainModel<CaseProps> {
   private constructor(props: CaseProps) {
     super(props);

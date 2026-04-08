@@ -6,7 +6,9 @@ import { CollectionNotFoundException } from '../../domain/exceptions/collection.
 
 @Injectable()
 export class FindCollectionsService implements FindCollectionsUseCase {
-  constructor(private readonly collectionRepository: CollectionRepositoryPort) {}
+  constructor(
+    private readonly collectionRepository: CollectionRepositoryPort,
+  ) {}
 
   async findAll(): Promise<Collection[]> {
     return this.collectionRepository.findAll();

@@ -1,4 +1,4 @@
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface WeaponProps {
   readonly id?: string;
@@ -14,7 +14,7 @@ export interface CreateWeaponProps extends Omit<
 
 export interface ReconstructWeaponProps extends WeaponProps {}
 
-export interface Weapon extends Readonly<WeaponProps> {}
+export interface Weapon extends DomainProps<WeaponProps> {}
 export class Weapon extends DomainModel<WeaponProps> {
   private constructor(props: WeaponProps) {
     super(props);

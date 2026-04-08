@@ -1,6 +1,6 @@
 import { CredentialId } from '@auth/domain/value-objects/credential-id.vo';
 import { PasswordHash } from '@auth/domain/value-objects/password-hash.vo';
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface CredentialProps {
   readonly id?: CredentialId;
@@ -23,7 +23,7 @@ export interface ReconstructCredentialProps {
   readonly updatedAt: Date;
 }
 
-export interface Credential extends Readonly<CredentialProps> {}
+export interface Credential extends DomainProps<CredentialProps> {}
 export class Credential extends DomainModel<CredentialProps> {
   private constructor(props: CredentialProps) {
     super(props);

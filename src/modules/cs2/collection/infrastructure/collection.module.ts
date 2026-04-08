@@ -18,7 +18,10 @@ import { CollectionController } from './adapters/in/rest/collection.controller';
   controllers: [CollectionController],
   providers: [
     { provide: CreateCollectionUseCase, useClass: CreateCollectionService },
-    { provide: CollectionRepositoryPort, useClass: TypeOrmCollectionRepository },
+    {
+      provide: CollectionRepositoryPort,
+      useClass: TypeOrmCollectionRepository,
+    },
     { provide: FindCollectionsUseCase, useClass: FindCollectionsService },
     { provide: UpdateCollectionUseCase, useClass: UpdateCollectionService },
     { provide: DeleteCollectionUseCase, useClass: DeleteCollectionService },

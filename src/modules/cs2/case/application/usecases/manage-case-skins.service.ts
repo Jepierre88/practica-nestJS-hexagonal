@@ -28,13 +28,13 @@ export class ManageCaseSkinsService implements ManageCaseSkinsUseCase {
     }
 
     // Gather all skins including the new one
-    const allSkins: Skin[] = [
-      ...existing.caseSkins.map((cs) => cs.skin),
-      skin,
-    ];
+    const allSkins: Skin[] = [...existing.caseSkins.map((cs) => cs.skin), skin];
 
     // Recalculate drop rates for all skins
-    const calculated = CasePricingService.calculateDropRates(existing.price, allSkins);
+    const calculated = CasePricingService.calculateDropRates(
+      existing.price,
+      allSkins,
+    );
 
     // Clear existing skins and re-add with new rates
     for (const cs of existing.caseSkins) {
@@ -61,7 +61,10 @@ export class ManageCaseSkinsService implements ManageCaseSkinsUseCase {
       .map((cs) => cs.skin);
 
     if (remainingSkins.length > 0) {
-      const calculated = CasePricingService.calculateDropRates(existing.price, remainingSkins);
+      const calculated = CasePricingService.calculateDropRates(
+        existing.price,
+        remainingSkins,
+      );
 
       for (const cs of remainingSkins) {
         await this.caseRepository.removeSkin(command.caseId, cs.id!);

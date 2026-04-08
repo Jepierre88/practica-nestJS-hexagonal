@@ -24,7 +24,9 @@ export class OpeningCaseOrmEntity {
   @Column({ name: 'result_skin_id', type: 'uuid' })
   resultSkinId: string;
 
-  @ManyToOne(() => OpeningOrmEntity, (o) => o.openingCases, { onDelete: 'CASCADE' })
+  @ManyToOne(() => OpeningOrmEntity, (o) => o.openingCases, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'opening_id' })
   opening: OpeningOrmEntity;
 

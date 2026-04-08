@@ -62,7 +62,11 @@ export class TypeOrmOpeningRepository implements OpeningRepositoryPort {
     await this.repository.delete(id);
   }
 
-  async addCase(openingId: string, caseId: string, resultSkinId: string): Promise<void> {
+  async addCase(
+    openingId: string,
+    caseId: string,
+    resultSkinId: string,
+  ): Promise<void> {
     const oc = new OpeningCaseOrmEntity();
     oc.openingId = openingId;
     oc.caseId = caseId;

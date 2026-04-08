@@ -6,7 +6,19 @@ import { OpeningModule } from './opening/infrastructure/opening.module';
 import { CollectionModule } from './collection/infrastructure/collection.module';
 
 @Module({
-  imports: [WeaponModule, SkinModule, CaseModule, OpeningModule, CollectionModule],
-  exports: [WeaponModule, SkinModule, CaseModule, OpeningModule, CollectionModule],
+  imports: [
+    WeaponModule,
+    SkinModule,
+    CaseModule,
+    OpeningModule,
+    CollectionModule,
+  ],
+  exports: [
+    WeaponModule,
+    SkinModule,
+    CaseModule,
+    OpeningModule,
+    CollectionModule,
+  ],
 })
 export class Cs2Module {}

@@ -2,7 +2,10 @@ import { Weapon } from '@cs2/weapon/domain/models/weapon.model';
 import { WeaponOrmEntity } from '../entities/weapon-orm.entity';
 import { PersistenceMapper } from '@shared/infrastructure/mappers/persistence-mapper.interface';
 
-export class WeaponPersistenceMapper extends PersistenceMapper<Weapon, WeaponOrmEntity> {
+export class WeaponPersistenceMapper extends PersistenceMapper<
+  Weapon,
+  WeaponOrmEntity
+> {
   toOrm(domain: Weapon): WeaponOrmEntity {
     const primitives = domain.toPrimitives();
     const orm = new WeaponOrmEntity();

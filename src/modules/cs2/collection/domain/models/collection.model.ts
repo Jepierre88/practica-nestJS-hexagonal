@@ -1,4 +1,4 @@
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface CollectionProps {
   readonly id?: string;
@@ -13,7 +13,7 @@ export interface CreateCollectionProps {
 
 export interface ReconstructCollectionProps extends CollectionProps {}
 
-export interface Collection extends Readonly<CollectionProps> {}
+export interface Collection extends DomainProps<CollectionProps> {}
 export class Collection extends DomainModel<CollectionProps> {
   private constructor(props: CollectionProps) {
     super(props);

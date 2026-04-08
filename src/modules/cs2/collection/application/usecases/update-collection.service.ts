@@ -7,7 +7,9 @@ import { CollectionNotFoundException } from '../../domain/exceptions/collection.
 
 @Injectable()
 export class UpdateCollectionService implements UpdateCollectionUseCase {
-  constructor(private readonly collectionRepository: CollectionRepositoryPort) {}
+  constructor(
+    private readonly collectionRepository: CollectionRepositoryPort,
+  ) {}
 
   async execute(command: UpdateCollectionCommand): Promise<Collection> {
     const existing = await this.collectionRepository.findById(command.id);

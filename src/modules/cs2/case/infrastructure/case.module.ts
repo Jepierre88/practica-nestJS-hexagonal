@@ -1,7 +1,9 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CreateCaseUseCase } from '../application/ports/in/create-case.port';
-import { CreateCaseService } from '../application/usecases/create-case.service';
+import { CreateCaseWithPriceUseCase } from '../application/ports/in/create-case-with-price.port';
+import { CreateCaseWithPriceService } from '../application/usecases/create-case-with-price.service';
+import { CreateCaseWithRatesUseCase } from '../application/ports/in/create-case-with-rates.port';
+import { CreateCaseWithRatesService } from '../application/usecases/create-case-with-rates.service';
 import { FindCasesUseCase } from '../application/ports/in/find-cases.port';
 import { FindCasesService } from '../application/usecases/find-cases.service';
 import { UpdateCaseUseCase } from '../application/ports/in/update-case.port';
@@ -19,6 +21,7 @@ import { CaseSkinOrmEntity } from './adapters/out/persistence/typeorm/entities/c
 import { CaseController } from './adapters/in/rest/case.controller';
 import { SkinModule } from '@cs2/skin/infrastructure/skin.module';
 import { OpeningModule } from '@cs2/opening/infrastructure/opening.module';
+import { CaseDtoMapper } from './adapters/in/rest/mappers/case-dto.mapper';
 
 @Module({
   imports: [
@@ -28,13 +31,21 @@ import { OpeningModule } from '@cs2/opening/infrastructure/opening.module';
   ],
   controllers: [CaseController],
   providers: [
-    { provide: CreateCaseUseCase, useClass: CreateCaseService },
+    {
+      provide: CreateCaseWithPriceUseCase,
+      useClass: CreateCaseWithPriceService,
+    },
+    {
+      provide: CreateCaseWithRatesUseCase,
+      useClass: CreateCaseWithRatesService,
+    },
     { provide: CaseRepositoryPort, useClass: TypeOrmCaseRepository },
     { provide: FindCasesUseCase, useClass: FindCasesService },
     { provide: UpdateCaseUseCase, useClass: UpdateCaseService },
     { provide: DeleteCaseUseCase, useClass: DeleteCaseService },
     { provide: ManageCaseSkinsUseCase, useClass: ManageCaseSkinsService },
     { provide: OpenCaseUseCase, useClass: OpenCaseService },
+    CaseDtoMapper,
   ],
   exports: [CaseRepositoryPort],
 })

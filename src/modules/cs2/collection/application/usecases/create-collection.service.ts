@@ -6,7 +6,9 @@ import { CollectionRepositoryPort } from '../ports/out/collection-repository.por
 
 @Injectable()
 export class CreateCollectionService implements CreateCollectionUseCase {
-  constructor(private readonly collectionRepository: CollectionRepositoryPort) {}
+  constructor(
+    private readonly collectionRepository: CollectionRepositoryPort,
+  ) {}
 
   async execute(command: CreateCollectionCommand): Promise<Collection> {
     const entity = Collection.create({ name: command.name });

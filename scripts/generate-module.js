@@ -4,7 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 const ask = (q) => new Promise((r) => rl.question(q, r));
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -30,7 +33,8 @@ function toCamel(str) {
 
 function pluralize(str) {
   if (str.endsWith('s')) return str;
-  if (str.endsWith('y') && !/[aeiou]y$/i.test(str)) return str.slice(0, -1) + 'ies';
+  if (str.endsWith('y') && !/[aeiou]y$/i.test(str))
+    return str.slice(0, -1) + 'ies';
   return str + 's';
 }
 
@@ -44,7 +48,7 @@ function writeFile(filePath, content) {
 // ─── Templates ──────────────────────────────────────────────
 
 function domainModel(pascal, kebab) {
-  return `import { DomainModel } from '@shared/domain/models/domain.model';
+  return `import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 
 export interface ${pascal}Props {
   readonly id?: string;
@@ -59,12 +63,10 @@ export interface Create${pascal}Props {
 
 export interface Reconstruct${pascal}Props extends ${pascal}Props {}
 
-export class ${pascal} extends DomainModel {
-  private readonly props: ${pascal}Props;
-
+export interface ${pascal} extends DomainProps<${pascal}Props> {}
+export class ${pascal} extends DomainModel<${pascal}Props> {
   private constructor(props: ${pascal}Props) {
-    super();
-    this.props = props;
+    super(props);
   }
 
   static create(props: Create${pascal}Props): ${pascal} {
@@ -73,14 +75,6 @@ export class ${pascal} extends DomainModel {
 
   static reconstruct(props: Reconstruct${pascal}Props): ${pascal} {
     return new ${pascal}(props);
-  }
-
-  get id(): string | undefined {
-    return this.props.id;
-  }
-
-  get name(): string {
-    return this.props.name;
   }
 
   toPrimitives() {
@@ -137,37 +131,16 @@ export abstract class ${pascal}RepositoryPort {
 // ─── Commands ───────────────────────────────────────────────
 
 function createCommand(pascal, kebab) {
-  return `export interface Create${pascal}CommandProps {
+  return `export interface Create${pascal}Command {
   readonly name: string;
-}
-
-export class Create${pascal}Command {
-  private constructor(
-    public readonly name: string,
-  ) {}
-
-  static create(props: Create${pascal}CommandProps): Create${pascal}Command {
-    return new Create${pascal}Command(props.name);
-  }
 }
 `;
 }
 
 function updateCommand(pascal, kebab) {
-  return `export interface Update${pascal}CommandProps {
+  return `export interface Update${pascal}Command {
   readonly id: string;
   readonly name?: string;
-}
-
-export class Update${pascal}Command {
-  private constructor(
-    public readonly id: string,
-    public readonly name?: string,
-  ) {}
-
-  static create(props: Update${pascal}CommandProps): Update${pascal}Command {
-    return new Update${pascal}Command(props.id, props.name);
-  }
 }
 `;
 }
@@ -548,16 +521,21 @@ function controller(pascal, kebab, camel, pluralKebab, crud) {
   const imports = [
     `import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';`,
   ];
-  const injects = [`private readonly create${pascal}UseCase: Create${pascal}UseCase,`];
-  const importPorts = [`import { Create${pascal}UseCase } from '@${kebab}/application/ports/in/create-${kebab}.port';`];
-  const importDtos = [`import { Create${pascal}Dto } from './dtos/create-${kebab}.dto';`];
-  const importCommands = [`import { Create${pascal}Command } from '@${kebab}/application/commands/create-${kebab}.command';`];
+  const injects = [
+    `private readonly create${pascal}UseCase: Create${pascal}UseCase,`,
+  ];
+  const importPorts = [
+    `import { Create${pascal}UseCase } from '@${kebab}/application/ports/in/create-${kebab}.port';`,
+  ];
+  const importDtos = [
+    `import { Create${pascal}Dto } from './dtos/create-${kebab}.dto';`,
+  ];
 
   let methods = `
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: Create${pascal}Dto): Promise<${pascal}ResponseDto> {
-    const entity = await this.create${pascal}UseCase.execute(Create${pascal}Command.create({ ...dto }));
+    const entity = await this.create${pascal}UseCase.execute({ ...dto });
     return ${pascal}DtoMapper.toResponse(entity);
   }`;
 
@@ -576,9 +554,6 @@ function controller(pascal, kebab, camel, pluralKebab, crud) {
     importDtos.push(
       `import { Update${pascal}Dto } from './dtos/update-${kebab}.dto';`,
     );
-    importCommands.push(
-      `import { Update${pascal}Command } from '@${kebab}/application/commands/update-${kebab}.command';`,
-    );
     methods += `
 
   @Get()
@@ -595,7 +570,7 @@ function controller(pascal, kebab, camel, pluralKebab, crud) {
 
   @Put(':id')
   async update(@Param() params: UuidParam, @Body() dto: Update${pascal}Dto): Promise<${pascal}ResponseDto> {
-    const entity = await this.update${pascal}UseCase.execute(Update${pascal}Command.create({ id: params.id, ...dto }));
+    const entity = await this.update${pascal}UseCase.execute({ id: params.id, ...dto });
     return ${pascal}DtoMapper.toResponse(entity);
   }
 
@@ -609,7 +584,6 @@ function controller(pascal, kebab, camel, pluralKebab, crud) {
   return `${imports.join('\n')}
 ${importPorts.join('\n')}
 ${importDtos.join('\n')}
-${importCommands.join('\n')}
 import { ${pascal}ResponseDto } from './dtos/${kebab}-response.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { ${pascal}DtoMapper } from './mappers/${kebab}-dto.mapper';
@@ -682,11 +656,17 @@ async function main() {
   const camel = toCamel(kebab);
 
   const defaultPlural = pluralize(kebab);
-  const pluralAnswer = await ask(`📚 Plural name for routes/tables [${defaultPlural}]: `);
-  const pluralKebab = pluralAnswer.trim() ? toKebab(pluralAnswer.trim()) : defaultPlural;
+  const pluralAnswer = await ask(
+    `📚 Plural name for routes/tables [${defaultPlural}]: `,
+  );
+  const pluralKebab = pluralAnswer.trim()
+    ? toKebab(pluralAnswer.trim())
+    : defaultPlural;
   const pluralPascal = toPascal(pluralKebab);
 
-  const schemaName = await ask(`🗄️  DB schema name in DbSchemas enum (e.g. Task, Auth, Tech): `);
+  const schemaName = await ask(
+    `🗄️  DB schema name in DbSchemas enum (e.g. Task, Auth, Tech): `,
+  );
 
   const crudAnswer = await ask('📝 Generate full CRUD? (y/n) [y]: ');
   const crud = crudAnswer.trim().toLowerCase() !== 'n';
@@ -697,63 +677,220 @@ async function main() {
 
   console.log(`\n📁 Generating module "${pascal}" at src/modules/${kebab}/\n`);
   console.log(`   Plural: ${pluralKebab}`);
-  console.log(`   CRUD: ${crud ? 'Yes (create, find, update, delete)' : 'No (create only)'}`);
+  console.log(
+    `   CRUD: ${crud ? 'Yes (create, find, update, delete)' : 'No (create only)'}`,
+  );
   console.log(`   Schema: ${schemaName}\n`);
 
   // Domain
-  writeFile(path.join(base, 'domain', 'models', `${kebab}.model.ts`), domainModel(pascal, kebab));
-  writeFile(path.join(base, 'domain', 'exceptions', `${kebab}.exception.ts`), domainException(pascal, kebab));
+  writeFile(
+    path.join(base, 'domain', 'models', `${kebab}.model.ts`),
+    domainModel(pascal, kebab),
+  );
+  writeFile(
+    path.join(base, 'domain', 'exceptions', `${kebab}.exception.ts`),
+    domainException(pascal, kebab),
+  );
 
   // Application — Commands
-  writeFile(path.join(base, 'application', 'commands', `create-${kebab}.command.ts`), createCommand(pascal, kebab));
+  writeFile(
+    path.join(base, 'application', 'commands', `create-${kebab}.command.ts`),
+    createCommand(pascal, kebab),
+  );
   if (crud) {
-    writeFile(path.join(base, 'application', 'commands', `update-${kebab}.command.ts`), updateCommand(pascal, kebab));
+    writeFile(
+      path.join(base, 'application', 'commands', `update-${kebab}.command.ts`),
+      updateCommand(pascal, kebab),
+    );
   }
 
   // Application — Ports in
-  writeFile(path.join(base, 'application', 'ports', 'in', `create-${kebab}.port.ts`), createPort(pascal, kebab));
+  writeFile(
+    path.join(base, 'application', 'ports', 'in', `create-${kebab}.port.ts`),
+    createPort(pascal, kebab),
+  );
   if (crud) {
-    writeFile(path.join(base, 'application', 'ports', 'in', `find-${kebab}s.port.ts`), findPort(pascal, kebab));
-    writeFile(path.join(base, 'application', 'ports', 'in', `update-${kebab}.port.ts`), updatePort(pascal, kebab));
-    writeFile(path.join(base, 'application', 'ports', 'in', `delete-${kebab}.port.ts`), deletePort(pascal, kebab));
+    writeFile(
+      path.join(base, 'application', 'ports', 'in', `find-${kebab}s.port.ts`),
+      findPort(pascal, kebab),
+    );
+    writeFile(
+      path.join(base, 'application', 'ports', 'in', `update-${kebab}.port.ts`),
+      updatePort(pascal, kebab),
+    );
+    writeFile(
+      path.join(base, 'application', 'ports', 'in', `delete-${kebab}.port.ts`),
+      deletePort(pascal, kebab),
+    );
   }
 
   // Application — Ports out
-  writeFile(path.join(base, 'application', 'ports', 'out', `${kebab}-repository.port.ts`), repositoryPort(pascal, kebab, crud));
+  writeFile(
+    path.join(
+      base,
+      'application',
+      'ports',
+      'out',
+      `${kebab}-repository.port.ts`,
+    ),
+    repositoryPort(pascal, kebab, crud),
+  );
 
   // Application — Use Cases
-  writeFile(path.join(base, 'application', 'usecases', `create-${kebab}.service.ts`), createService(pascal, kebab, camel));
+  writeFile(
+    path.join(base, 'application', 'usecases', `create-${kebab}.service.ts`),
+    createService(pascal, kebab, camel),
+  );
   if (crud) {
-    writeFile(path.join(base, 'application', 'usecases', `find-${kebab}s.service.ts`), findService(pascal, kebab, camel));
-    writeFile(path.join(base, 'application', 'usecases', `update-${kebab}.service.ts`), updateService(pascal, kebab, camel));
-    writeFile(path.join(base, 'application', 'usecases', `delete-${kebab}.service.ts`), deleteService(pascal, kebab, camel));
+    writeFile(
+      path.join(base, 'application', 'usecases', `find-${kebab}s.service.ts`),
+      findService(pascal, kebab, camel),
+    );
+    writeFile(
+      path.join(base, 'application', 'usecases', `update-${kebab}.service.ts`),
+      updateService(pascal, kebab, camel),
+    );
+    writeFile(
+      path.join(base, 'application', 'usecases', `delete-${kebab}.service.ts`),
+      deleteService(pascal, kebab, camel),
+    );
   }
 
   // Infrastructure — Persistence
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'out', 'persistence', 'typeorm', 'entities', `${kebab}-orm.entity.ts`), ormEntity(pascal, kebab, pluralKebab, schemaName));
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'out', 'persistence', 'typeorm', 'mappers', `${kebab}-persistence.mapper.ts`), persistenceMapper(pascal, kebab));
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'out', 'persistence', 'typeorm', 'repositories', `typeorm-${kebab}.repository.ts`), typeormRepository(pascal, kebab, camel, crud));
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'out',
+      'persistence',
+      'typeorm',
+      'entities',
+      `${kebab}-orm.entity.ts`,
+    ),
+    ormEntity(pascal, kebab, pluralKebab, schemaName),
+  );
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'out',
+      'persistence',
+      'typeorm',
+      'mappers',
+      `${kebab}-persistence.mapper.ts`,
+    ),
+    persistenceMapper(pascal, kebab),
+  );
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'out',
+      'persistence',
+      'typeorm',
+      'repositories',
+      `typeorm-${kebab}.repository.ts`,
+    ),
+    typeormRepository(pascal, kebab, camel, crud),
+  );
 
   // Infrastructure — REST
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'dtos', `create-${kebab}.dto.ts`), createDto(pascal, kebab));
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'dtos', `${kebab}-response.dto.ts`), responseDto(pascal, kebab));
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'dtos', 'uuid-param.dto.ts'), uuidParamDto());
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'in',
+      'rest',
+      'dtos',
+      `create-${kebab}.dto.ts`,
+    ),
+    createDto(pascal, kebab),
+  );
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'in',
+      'rest',
+      'dtos',
+      `${kebab}-response.dto.ts`,
+    ),
+    responseDto(pascal, kebab),
+  );
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'in',
+      'rest',
+      'dtos',
+      'uuid-param.dto.ts',
+    ),
+    uuidParamDto(),
+  );
   if (crud) {
-    writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'dtos', `update-${kebab}.dto.ts`), updateDto(pascal, kebab));
+    writeFile(
+      path.join(
+        base,
+        'infrastructure',
+        'adapters',
+        'in',
+        'rest',
+        'dtos',
+        `update-${kebab}.dto.ts`,
+      ),
+      updateDto(pascal, kebab),
+    );
   }
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', 'mappers', `${kebab}-dto.mapper.ts`), dtoMapper(pascal, kebab));
-  writeFile(path.join(base, 'infrastructure', 'adapters', 'in', 'rest', `${kebab}.controller.ts`), controller(pascal, kebab, camel, pluralKebab, crud));
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'in',
+      'rest',
+      'mappers',
+      `${kebab}-dto.mapper.ts`,
+    ),
+    dtoMapper(pascal, kebab),
+  );
+  writeFile(
+    path.join(
+      base,
+      'infrastructure',
+      'adapters',
+      'in',
+      'rest',
+      `${kebab}.controller.ts`,
+    ),
+    controller(pascal, kebab, camel, pluralKebab, crud),
+  );
 
   // Infrastructure — Module
-  writeFile(path.join(base, 'infrastructure', `${kebab}.module.ts`), nestModule(pascal, kebab, crud));
+  writeFile(
+    path.join(base, 'infrastructure', `${kebab}.module.ts`),
+    nestModule(pascal, kebab, crud),
+  );
 
   console.log(`\n✅ Module "${pascal}" generated successfully!`);
   console.log(`\n⚠️  Next steps:`);
-  console.log(`   1. Add "${pascal}" to DbSchemas enum in src/shared/schemas.ts (if not already there)`);
+  console.log(
+    `   1. Add "${pascal}" to DbSchemas enum in src/shared/schemas.ts (if not already there)`,
+  );
   console.log(`   2. Add path alias "@${kebab}/*" in tsconfig.json`);
   console.log(`   3. Register ${pascal}Module in app.module.ts`);
-  console.log(`   4. Add ${pascal}OrmEntity to the entities array in app.module.ts`);
-  console.log(`   5. Generate a migration: npm run migration:generate --name=Create${pascal}Table`);
+  console.log(
+    `   4. Add ${pascal}OrmEntity to the entities array in app.module.ts`,
+  );
+  console.log(
+    `   5. Generate a migration: npm run migration:generate --name=Create${pascal}Table`,
+  );
   console.log(`   6. Run migration: npm run migration:run\n`);
 }
 

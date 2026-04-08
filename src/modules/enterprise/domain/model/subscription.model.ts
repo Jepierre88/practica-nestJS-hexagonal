@@ -1,4 +1,4 @@
-import { DomainModel } from '@shared/domain/models/domain.model';
+import { DomainModel, DomainProps } from '@shared/domain/models/domain.model';
 import { ESubscriptionType } from '../enums/subscription-type.enum';
 
 interface SubscriptionProps {
@@ -17,7 +17,7 @@ type CreateSubscriptionProps = Omit<
 
 type ReconstructSubscriptionProps = SubscriptionProps;
 
-export interface Subscription extends Readonly<SubscriptionProps> {}
+export interface Subscription extends DomainProps<SubscriptionProps> {}
 export class Subscription extends DomainModel<SubscriptionProps> {
   private constructor(props: SubscriptionProps) {
     super(props);

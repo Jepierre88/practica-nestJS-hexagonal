@@ -16,8 +16,6 @@ import { UpdateWeaponUseCase } from '@cs2/weapon/application/ports/in/update-wea
 import { DeleteWeaponUseCase } from '@cs2/weapon/application/ports/in/delete-weapon.port';
 import { CreateWeaponDto } from './dtos/create-weapon.dto';
 import { UpdateWeaponDto } from './dtos/update-weapon.dto';
-import { CreateWeaponCommand } from '@cs2/weapon/application/commands/create-weapon.command';
-import { UpdateWeaponCommand } from '@cs2/weapon/application/commands/update-weapon.command';
 import { WeaponResponseDto } from './dtos/weapon-response.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { WeaponDtoMapper } from './mappers/weapon-dto.mapper';

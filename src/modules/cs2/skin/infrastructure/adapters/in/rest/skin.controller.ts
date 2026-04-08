@@ -16,8 +16,6 @@ import { UpdateSkinUseCase } from '@cs2/skin/application/ports/in/update-skin.po
 import { DeleteSkinUseCase } from '@cs2/skin/application/ports/in/delete-skin.port';
 import { CreateSkinDto } from './dtos/create-skin.dto';
 import { UpdateSkinDto } from './dtos/update-skin.dto';
-import { CreateSkinCommand } from '@cs2/skin/application/commands/create-skin.command';
-import { UpdateSkinCommand } from '@cs2/skin/application/commands/update-skin.command';
 import { SkinResponseDto } from './dtos/skin-response.dto';
 import { UuidParam } from './dtos/uuid-param.dto';
 import { SkinDtoMapper } from './mappers/skin-dto.mapper';

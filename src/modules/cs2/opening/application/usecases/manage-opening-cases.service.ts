@@ -32,7 +32,11 @@ export class ManageOpeningCasesService implements ManageOpeningCasesUseCase {
       throw new Error(`Skin "${command.resultSkinId}" not found.`);
     }
 
-    await this.openingRepository.addCase(command.openingId, command.caseId, command.resultSkinId);
+    await this.openingRepository.addCase(
+      command.openingId,
+      command.caseId,
+      command.resultSkinId,
+    );
     return (await this.openingRepository.findById(command.openingId))!;
   }
 

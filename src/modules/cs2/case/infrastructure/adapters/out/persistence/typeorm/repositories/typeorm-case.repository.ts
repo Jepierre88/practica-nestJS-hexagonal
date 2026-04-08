@@ -27,14 +27,24 @@ export class TypeOrmCaseRepository implements CaseRepositoryPort {
   async findById(id: string): Promise<Case | null> {
     const orm = await this.repository.findOne({
       where: { id },
-      relations: ['caseSkins', 'caseSkins.skin', 'caseSkins.skin.weapon', 'caseSkins.skin.collection'],
+      relations: [
+        'caseSkins',
+        'caseSkins.skin',
+        'caseSkins.skin.weapon',
+        'caseSkins.skin.collection',
+      ],
     });
     return orm ? this.mapper.toDomain(orm) : null;
   }
 
   async findAll(): Promise<Case[]> {
     const entities = await this.repository.find({
-      relations: ['caseSkins', 'caseSkins.skin', 'caseSkins.skin.weapon', 'caseSkins.skin.collection'],
+      relations: [
+        'caseSkins',
+        'caseSkins.skin',
+        'caseSkins.skin.weapon',
+        'caseSkins.skin.collection',
+      ],
     });
     return entities.map((orm) => this.mapper.toDomain(orm));
   }
@@ -50,7 +60,11 @@ export class TypeOrmCaseRepository implements CaseRepositoryPort {
     await this.repository.delete(id);
   }
 
-  async addSkin(caseId: string, skinId: string, dropRate: number): Promise<void> {
+  async addSkin(
+    caseId: string,
+    skinId: string,
+    dropRate: number,
+  ): Promise<void> {
     const caseSkin = new CaseSkinOrmEntity();
     caseSkin.caseId = caseId;
     caseSkin.skinId = skinId;

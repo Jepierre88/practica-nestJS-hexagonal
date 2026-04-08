@@ -37,7 +37,6 @@ export default new DataSource({
     OpeningOrmEntity,
     OpeningCaseOrmEntity,
     CollectionOrmEntity,
-
   ],
   migrations: ['dist/database/migrations/*'],
   migrationsTableName: 'migrations',

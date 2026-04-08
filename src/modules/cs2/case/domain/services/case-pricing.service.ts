@@ -11,7 +11,10 @@ export class CasePricingService {
    * More expensive skins relative to case price = lower drop rate.
    * Uses inverse-price weighting: cheaper skins are more likely to drop.
    */
-  static calculateDropRates(casePrice: number, skins: Skin[]): CalculatedCaseSkin[] {
+  static calculateDropRates(
+    casePrice: number,
+    skins: Skin[],
+  ): CalculatedCaseSkin[] {
     if (skins.length === 0) return [];
 
     // Inverse weight: cheaper skins get higher weight (more likely to drop)

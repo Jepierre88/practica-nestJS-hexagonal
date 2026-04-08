@@ -20,7 +20,7 @@ export class CaseOpeningService {
 
     let cumulative = 0;
     for (let i = 0; i < caseSkins.length; i++) {
-      cumulative += caseSkins[i].dropRate;
+      cumulative += caseSkins[i].toPrimitives().dropRate;
       if (random <= cumulative) {
         return { winnerSkin: caseSkins[i], winnerIndex: i };
       }
